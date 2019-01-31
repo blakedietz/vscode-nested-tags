@@ -1,25 +1,18 @@
 {
 	"name": "nested-tags",
-	"displayName": "nested-tags",
+	"displayName": "Nested Tags",
 	"description": "",
-	"version": "0.0.1",
+	"version": "0.0.0",
 	"engines": {
 		"vscode": "^1.30.0"
 	},
 	"categories": [
-		"Other"
+    "Markdown"
 	],
-	"activationEvents": [
-		"onCommand:extension.helloWorld"
-	],
+	"activationEvents": [ ],
 	"main": "./out/extension.js",
 	"contributes": {
-		"commands": [
-			{
-				"command": "extension.helloWorld",
-				"title": "Hello World"
-			}
-		]
+		"commands": [ ]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
