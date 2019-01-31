@@ -1,31 +1,74 @@
 {
-	"name": "nested-tags",
-	"displayName": "Nested Tags",
-	"description": "",
-	"version": "0.0.0",
-	"engines": {
-		"vscode": "^1.30.0"
-	},
-	"categories": [
-    "Markdown"
-	],
-	"activationEvents": [ ],
-	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [ ]
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"postinstall": "node ./node_modules/vscode/bin/install",
-		"test": "npm run compile && node ./node_modules/vscode/bin/test"
-	},
-	"devDependencies": {
-		"typescript": "^3.1.4",
-		"vscode": "^1.1.25",
-		"tslint": "^5.8.0",
-		"@types/node": "^8.10.25",
-		"@types/mocha": "^2.2.42"
-	}
+  "name": "nested-tags",
+  "displayName": "Nested Tags",
+  "description": "",
+  "version": "0.0.0",
+  "engines": {
+    "vscode": "^1.30.0"
+  },
+  "categories": [
+    "Markdown",
+    "Notes",
+    "Organization"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": []
+  },
+  "scripts": {
+    "build": "tsc -build tsconfig.json",
+    "build:watch": "tsc -build tsconfig.json -w",
+    "commit": "git-cz",
+    "compile": "tsc -p ./",
+    "docs": "./node_modules/.bin/typedoc --tsconfig tsconfig.json --out ./docs",
+    "lint": "tslint -p tsconfig.commonjs.json",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "prettify": "prettier --write src/**/*{.ts,.md}",
+    "semantic-release": "semantic-release",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "vscode:prepublish": "npm run build",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@semantic-release/commit-analyzer": "^6.1.0",
+    "@semantic-release/exec": "^3.3.2",
+    "@semantic-release/git": "^7.0.8",
+    "@semantic-release/github": "^5.2.9",
+    "@semantic-release/npm": "^5.1.4",
+    "@types/jest": "^23.3.12",
+    "@types/node": "^10.12.18",
+    "commitizen": "^3.0.5",
+    "cz-conventional-changelog": "^2.1.0",
+    "husky": "^1.3.1",
+    "jest": "^23.6.0",
+    "lint-staged": "^8.1.0",
+    "prettier": "^1.15.3",
+    "semantic-release": "16.0.0-beta.9",
+    "ts-jest": "^23.10.5",
+    "tslint": "^5.12.1",
+    "tslint-config-prettier": "^1.17.0",
+    "typedoc": "^0.14.2",
+    "typescript": "^3.2.2",
+    "vscode": "^1.1.25"
+  },
+  "config": {
+    "loglevel": "verbose",
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run build && npm run test && lint-staged",
+      "pre-push": "npm run test"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  }
 }
