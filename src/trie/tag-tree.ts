@@ -1,5 +1,5 @@
-import { TagNode } from "./tag-node";
 import { FileNode } from "./file-node";
+import { TagNode } from "./tag-node";
 
 class TagTree {
   private root: TagNode;
