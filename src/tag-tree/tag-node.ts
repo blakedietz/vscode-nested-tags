@@ -6,16 +6,18 @@ class TagNode {
 
   public displayName: string;
   public tag: string;
+  public pathToNode: string;
 
-  constructor(tag: string, displayName = "") {
+  constructor(tag: string, pathToNode: string, displayName = "") {
     this.displayName = displayName;
     this.files = new Map<string, FileNode>();
+    this.pathToNode = pathToNode;
     this.tag = tag;
     this.tags = new Map<string, TagNode>();
   }
 
-  public addTag(tag: string, displayName = tag) {
-    this.tags.set(tag, new TagNode(tag, displayName));
+  public addTag(tag: string, pathToNode: string, displayName = tag) {
+    this.tags.set(tag, new TagNode(tag, pathToNode, displayName));
   }
 
   public getTag(tag: string) {

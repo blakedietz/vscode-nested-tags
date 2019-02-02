@@ -1,5 +1,5 @@
 import { TagTree } from "./tag-tree";
-import { walkFromPath } from "./test-helpers";
+import { convertTreeToObject, walkFromPath } from "./test-helpers";
 
 describe("Trie", () => {
   describe("addNode", () => {
@@ -19,6 +19,16 @@ describe("Trie", () => {
       tagTree.addFile("foo.md", ["hello/world"], "foo.md");
       const file = walkFromPath("hello/world/foo.md", tagTree);
       console.log(file);
+    });
+    test("Two files under the same tag", () => {
+      const tagTree = new TagTree();
+      tagTree.addFile("foo.md", ["hello"], "foo.md");
+      tagTree.addFile("bar.md", ["hello"], "foo.md");
+      const fooFile = walkFromPath("hello/foo.md", tagTree);
+      const barFile = walkFromPath("hello/foo.md", tagTree);
+      console.log(convertTreeToObject(tagTree));
+      console.log(fooFile);
+      console.log(barFile);
     });
 
     // test("No depth path", () => {});
