@@ -1,7 +1,7 @@
-import { TagTree } from "./tag-tree/tag-tree";
-import { TagNode } from "./tag-tree/tag-node";
-import { FileNode } from "./tag-tree/file-node";
 import * as vscode from "vscode";
+import { FileNode } from "./tag-tree/file-node";
+import { TagNode } from "./tag-tree/tag-node";
+import { TagTree } from "./tag-tree/tag-tree";
 
 class TagTreeDataProvider
   implements vscode.TreeDataProvider<TagNode | FileNode> {
