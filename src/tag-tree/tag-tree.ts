@@ -67,11 +67,11 @@ class TagTree {
      * tag tree
      */
     nodeToAddFileTo.addFile(fileNode);
-    if (!this.fileIndex.has(fileNode.filePath)) {
-      this.fileIndex.set(fileNode.filePath, [nodeToAddFileTo]);
+    if (!this.fileIndex.has(fileNode.key)) {
+      this.fileIndex.set(fileNode.key, [nodeToAddFileTo]);
     } else {
-      const nodesForFile = this.fileIndex.get(fileNode.filePath)!;
-      this.fileIndex.set(fileNode.filePath, [...nodesForFile, nodeToAddFileTo]);
+      const nodesForFile = this.fileIndex.get(fileNode.key)!;
+      this.fileIndex.set(fileNode.key, [...nodesForFile, nodeToAddFileTo]);
     }
   }
 }
