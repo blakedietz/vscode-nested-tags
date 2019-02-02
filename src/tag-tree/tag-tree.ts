@@ -27,32 +27,29 @@ class TagTree {
      * Given a tag path, the tags that lead up to the file may not exist in the tag tree continue down the path
      * building the parts of the tree that don't exist one node at a time
      */
-    let currentNode = this.root;
-    const partsToAdd = tagPath.split("/").reverse();
-    while (partsToAdd.length > 0) {
-      const pathToAdd = String(partsToAdd.pop());
-
-      // Node already has the tag use that tag instead
-      if (currentNode.getTag(pathToAdd) !== undefined) {
-        currentNode = currentNode.getTag(pathToAdd)!;
-      }
-      // The node has not had this tag added yet so make sure one exists
-      else {
-        currentNode.addTag(pathToAdd);
-        currentNode = currentNode.getTag(pathToAdd)!;
-      }
-    }
+    const nodeToAddFileTo = tagPath
+      .split("/")
+      .reduce((currentNode, pathToAdd) => {
+        if (currentNode.getTag(pathToAdd) !== undefined) {
+          return currentNode.getTag(pathToAdd)!;
+        }
+        // The node has not had this tag added yet so make sure one exists
+        else {
+          currentNode.addTag(pathToAdd);
+          return currentNode.getTag(pathToAdd)!;
+        }
+      }, this.root);
 
     /**
      * At this point, the tag tree has been built and we can just add the file to the
      * tag tree
      */
-    currentNode.addFile(fileNode);
+    nodeToAddFileTo.addFile(fileNode);
     if (!this.fileIndex.has(fileNode.filePath)) {
-      this.fileIndex.set(fileNode.filePath, [currentNode]);
+      this.fileIndex.set(fileNode.filePath, [nodeToAddFileTo]);
     } else {
       const nodesForFile = this.fileIndex.get(fileNode.filePath)!;
-      this.fileIndex.set(fileNode.filePath, [...nodesForFile, currentNode]);
+      this.fileIndex.set(fileNode.filePath, [...nodesForFile, nodeToAddFileTo]);
     }
   }
 }

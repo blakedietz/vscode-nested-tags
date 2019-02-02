@@ -27,6 +27,24 @@ function replaceMapWithObject(key, value) {
 }
 
 // @ts-ignore
+export function walkFromPath(path: string, tree) {
+  const treeObject = convertTreeToObject(tree);
+
+  const pathParts = path.split("/");
+  const file = pathParts.pop();
+  const tagPath = pathParts;
+
+  // @ts-ignore
+  const finalTagNode = tagPath.reduce(
+    (node, nodePath) => node.tags[nodePath],
+    treeObject.root
+  );
+
+  // @ts-ignore
+  return finalTagNode.files[file];
+}
+
+// @ts-ignore
 export function convertTreeToObject(objectToSerialize) {
   return JSON.parse(JSON.stringify(objectToSerialize, replaceMapWithObject));
 }

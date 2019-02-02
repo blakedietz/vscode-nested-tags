@@ -1,26 +1,24 @@
 import { TagTree } from "./tag-tree";
-import { convertTreeToObject } from "./trie-test-helpers";
+import { walkFromPath } from "./test-helpers";
 
 describe("Trie", () => {
   describe("addNode", () => {
     test("Single depth path", () => {
       const tagTree = new TagTree();
       tagTree.addFile("foo.md", ["hello"], "foo.md");
-      console.log(convertTreeToObject(tagTree));
-      console.log(convertTreeToObject(tagTree).root.tags.hello.files["foo.md"]);
+
+      const file = walkFromPath("hello/foo.md", tagTree);
+      console.log(file);
     });
     test("Two separate branches", () => {
       const tagTree = new TagTree();
       tagTree.addFile("foo.md", ["hello", "world"], "foo.md");
-      console.log(convertTreeToObject(tagTree).root.tags.hello.files["foo.md"]);
-      console.log(convertTreeToObject(tagTree).root.tags.world.files["foo.md"]);
     });
     test("Two directories deep", () => {
       const tagTree = new TagTree();
       tagTree.addFile("foo.md", ["hello/world"], "foo.md");
-      console.log(
-        convertTreeToObject(tagTree).root.tags.hello.tags.world.files["foo.md"]
-      );
+      const file = walkFromPath("hello/world/foo.md", tagTree);
+      console.log(file);
     });
 
     // test("No depth path", () => {});
