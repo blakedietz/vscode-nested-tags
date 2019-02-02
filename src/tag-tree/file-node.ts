@@ -15,7 +15,7 @@ class FileNode {
   ) {
     this.displayName = displayName;
     this.filePath = filePath;
-    this.pathToNode = pathToNode;
+    this.pathToNode = `${pathToNode}/${filePath}`;
     this.tags = tags;
   }
 }
