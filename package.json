@@ -11,7 +11,9 @@
     "Notes",
     "Organization"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onView:tagTreeView"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "views": {

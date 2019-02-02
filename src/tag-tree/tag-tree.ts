@@ -2,7 +2,7 @@ import { TagNode } from "./tag-node";
 import { FileNode } from "./file-node";
 
 class TagTree {
-  private root: TagNode;
+  public root: TagNode;
   private fileIndex: Map<string, TagNode[]>;
 
   constructor() {
@@ -27,7 +27,7 @@ class TagTree {
     return nodePath.split("/").reduce((currentNode, pathPart) => {
       // Must be looking at a file
       if (pathPart.includes(".")) {
-        currentNode.files.get(pathPart);
+        return currentNode.files.get(pathPart);
       } else {
         return currentNode.tags.get(pathPart);
       }

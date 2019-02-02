@@ -15,6 +15,11 @@ class TagTreeDataProvider
   public getChildren(element: TagNode | FileNode) {
     if (element instanceof FileNode) {
       return [];
+    } else if (element === undefined) {
+      return [
+        ...this.tagTree.root.tags.values(),
+        ...this.tagTree.root.files.values()
+      ];
     } else {
       return [...element.tags.values(), ...element.files.values()];
     }
@@ -25,20 +30,11 @@ class TagTreeDataProvider
     const { displayName } = tagTreeNode;
     const isFile = tagTreeNode instanceof FileNode;
 
-    return {
-      // @ts-ignore
-      label: <vscode.TreeItemLabel>{
-        label: displayname,
-        highlights:
-          displayname.length > 1
-            ? [[displayname.length - 2, displayname.length - 1]]
-            : void 0
-      },
-      tooltip: `Tooltip for ${displayName}`,
-      collapsibleState: isFile
-        ? vscode.TreeItemCollapsibleState.None
-        : vscode.TreeItemCollapsibleState.Collapsed
-    };
+    const collapsibleState = isFile
+      ? vscode.TreeItemCollapsibleState.None
+      : vscode.TreeItemCollapsibleState.Collapsed;
+
+    return new vscode.TreeItem(displayName, collapsibleState);
   }
 }
 
