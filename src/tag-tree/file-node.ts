@@ -5,10 +5,17 @@ class FileNode {
   public filePath: string;
   // The tags that are in the file itself;
   public tags: string[];
+  public pathToNode: string;
 
-  constructor(filePath: string, tags: string[], displayName: string) {
+  constructor(
+    filePath: string,
+    pathToNode: string,
+    tags: string[],
+    displayName: string
+  ) {
     this.displayName = displayName;
     this.filePath = filePath;
+    this.pathToNode = pathToNode;
     this.tags = tags;
   }
 }

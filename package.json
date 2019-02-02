@@ -1,5 +1,5 @@
 {
-  "name": "nested-tags",
+  "name": "vscode-nested-tags",
   "displayName": "Nested Tags",
   "description": "",
   "version": "0.0.0",
@@ -14,7 +14,14 @@
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": []
+    "views": {
+      "explorer": [
+        {
+          "id": "tagTreeView",
+          "name": "Tag Tree"
+        }
+      ]
+    }
   },
   "scripts": {
     "build": "tsc -build tsconfig.json",
