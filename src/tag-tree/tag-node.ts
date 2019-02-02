@@ -28,12 +28,12 @@ class TagNode {
     this.tags.delete(tag);
   }
 
-  public hasFile(filePath: string) {
-    return this.files.has(filePath);
+  public hasFile(key: string) {
+    return this.files.has(key);
   }
 
   public addFile(node: FileNode) {
-    this.files.set(node.filePath, node);
+    this.files.set(node.key, node);
   }
 }
 

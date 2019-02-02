@@ -17,7 +17,54 @@ class TagTreeDataProvider
   constructor() {
     this._onDidChangeFile = new vscode.EventEmitter<vscode.FileChangeEvent[]>();
     this.tagTree = new TagTree();
-    this.tagTree.addFile("foo.md", ["hello/world"], "foo.md");
+    this.readAllFilesInWorkspaceFolders();
+  }
+
+  /**
+   * https://gist.github.com/luciopaiva/4ba78a124704007c702d0293e7ff58dd
+   */
+  *walkSync(dir) {
+    const files = fs.readdirSync(dir);
+
+    for (const file of files) {
+      const pathToFile = path.join(dir, file);
+      const isDirectory = fs.statSync(pathToFile).isDirectory();
+      if (isDirectory) {
+        yield* this.walkSync(pathToFile);
+      } else {
+        yield pathToFile;
+      }
+    }
+  }
+
+  readAllFilesInWorkspaceFolders() {
+    const workspaceFolder = vscode.workspace.workspaceFolders[0].uri.fsPath;
+    let files = [];
+
+    // TODO: (bdietz) - this is probably going to be pretty slow
+    for(const filePath of this.walkSync(workspaceFolder)) {
+      const fileInfo = fs
+        .readFileSync(filePath)
+        .toString()
+        .split("\n")
+        .reduce((accumulator,currentLine) => {
+          if (currentLine.includes('@nested-tags:')) {
+            const tagsToAdd= currentLine
+            .split('@nested-tags:').pop()
+            .split('-->')[0]
+            .split(',')
+            return {...accumulator, tags: new Set([...accumulator.tags,...tagsToAdd])};
+          }
+          return accumulator;
+        }, {tags: new Set(), filePath: filePath})
+      if (fileInfo.tags.size > 0) {
+        files.push(fileInfo);
+      }
+    }
+    for (const fileInfo of files) {
+      // TODO: (bdietz) - I think that this is where a bug us currently occuring
+      this.tagTree.addFile(fileInfo.filePath, [...fileInfo.tags], fileInfo.filePath);
+    }
   }
 
   get onDidChangeFile(): vscode.Event<vscode.FileChangeEvent[]> {
