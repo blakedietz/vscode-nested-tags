@@ -1,7 +1,16 @@
 import { TagTree } from "./tag-tree";
 import { convertTreeToObject, walkFromPath } from "./test-helpers";
 
-describe("Trie", () => {
+describe("TagTree", () => {
+  describe("getTagsForFile", () => {
+    test('Retrieves all tags for a file', () => {
+      const tagTree = new TagTree();
+      tagTree.addFile("foo.md", ["hello", "world"], "foo.md");
+      const tags = tagTree.getTagsForFile("foo.md");
+      expect([...tags]).toEqual(["hello", "world"]);
+    });
+  });
+
   describe("addNode", () => {
     test("Single depth path", () => {
       const tagTree = new TagTree();

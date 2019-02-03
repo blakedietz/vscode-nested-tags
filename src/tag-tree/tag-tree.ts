@@ -10,7 +10,9 @@ class TagTree {
     this.fileIndex = new Map();
   }
 
+  /// TODO:(bdietz) - figure out if this method supports adding a file multiple times
   public addFile(filePath: string, tags: string[], displayName: string) {
+    // TODO: (bdietz) - should it be the file node's job to write its own key?
     for (const tag of tags) {
       this.addFileNode(tag, new FileNode(filePath, tag, tags, displayName));
     }
@@ -20,6 +22,14 @@ class TagTree {
     if (!this.fileIndex.has(path)) {
       return;
     }
+  }
+
+  public getTagsForFile(filePath: string) {
+    const fileKey = new FileNode(filePath, '', [], '').key;
+    const tagNodes = this.fileIndex.get(fileKey)!;
+    return tagNodes.reduce((tags, tagNode) => {
+      return tags.add(tagNode.tag);
+    }, new Set());
   }
 
   public getNode(nodePath: string) {
