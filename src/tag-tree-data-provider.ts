@@ -31,7 +31,7 @@ class TagTreeDataProvider
 
   constructor() {
     // vscode.window.onDidChangeActiveTextEditor(() => this.onActiveEditorChanged());
-    // vscode.workspace.onDidChangeTextDocument(e => this.onDocumentChanged(e));
+    vscode.workspace.onDidChangeTextDocument(e => this.onDocumentChanged(e));
     // vscode.workspace.onDidSaveTextDocument((e) => {
     //   console.log(e);
     // });
@@ -41,7 +41,6 @@ class TagTreeDataProvider
     });
 
     this.tagTree = new TagTree();
-
     this.readAllFilesInWorkspaceFolders();
   }
 
@@ -90,24 +89,23 @@ class TagTreeDataProvider
   // }
 
   private onWillSaveTextDocument(changeEvent: vscode.TextDocumentWillSaveEvent) {
+    console.log(changeEvent);
     if (changeEvent.document.isDirty) {
-      console.log('Fix this');
-      console.trace();
       this.updateTreeForFile(changeEvent.document.fileName);
     }
   }
 
   private onDocumentChanged(changeEvent: vscode.TextDocumentChangeEvent): void {
-    // console.log('onDocumentChanged', changeEvent);
-    // if (this.autoRefresh && changeEvent.document.uri.toString() === this.editor.document.uri.toString()) {
-    //   for (const change of changeEvent.contentChanges) {
-    //     const path = json.getLocation(this.text, this.editor.document.offsetAt(change.range.start)).path;
-    //     path.pop();
-    //     const node = path.length ? json.findNodeAtLocation(this.tree, path) : void 0;
-    //     this.parseTree();
-    //     this._onDidChangeTreeData.fire(node ? node.offset : void 0);
-    //   }
-    // }
+    const filePath = changeEvent.document.fileName;
+    const fileInfo = this.getTagsFromFileText(changeEvent.document.getText(), filePath);
+    const tagsInTreeForFile = this.tagTree.getTagsForFile(filePath);
+    const isUpdateNeeded = !setsAreEqual(fileInfo.tags, tagsInTreeForFile);
+    if (isUpdateNeeded) {
+      this.tagTree.deleteFile(filePath);
+      this.tagTree.addFile(filePath, [...fileInfo.tags.values()], filePath);
+      // TODO: (bdietz) - this._onDidChangeTreeData.fire(specificNode?)
+      this._onDidChangeTreeData.fire();
+    }
   }
 
   // private onActiveEditorChanged(): void {
@@ -148,16 +146,15 @@ class TagTreeDataProvider
       const tagsInTreeForFile = this.tagTree.getTagsForFile(filePath);
       const isUpdateNeeded = !setsAreEqual(fileInfo.tags, tagsInTreeForFile);
       if (isUpdateNeeded) {
-        // TODO: (bdietz) - delete node
-        // TODO: (bdietz) - add node
+        this.tagTree.deleteFile(filePath);
+        this.tagTree.addFile(filePath, [...fileInfo.tags.values()], filePath);
+        // TODO: (bdietz) - this._onDidChangeTreeData.fire(specificNode?)
+        this._onDidChangeTreeData.fire();
       }
   }
 
-  // TODO: (bdietz) - the method name is kind of misleading because it returns both filePath and tags
-  private getTagsFromFile(filePath: string) {
-      const fileInfo = fs
-        .readFileSync(filePath)
-        .toString()
+  private getTagsFromFileText(fileContents: string, filePath) {
+    return fileContents
         .split("\n")
         .reduce((accumulator,currentLine) => {
           if (currentLine.includes('@nested-tags:')) {
@@ -169,8 +166,12 @@ class TagTreeDataProvider
           }
           return accumulator;
         }, {tags: new Set(), filePath: filePath});
-    return fileInfo;
   }
+
+  // TODO: (bdietz) - the method name is kind of misleading because it returns both filePath and tags
+  private getTagsFromFile(filePath: string) {
+      return this.getTagsFromFileText(fs.readFileSync(filePath).toString(), filePath);
+    }
 
   private readAllFilesInWorkspaceFolders() {
     const workspaceFolder = vscode.workspace.workspaceFolders[0].uri.fsPath;
@@ -179,7 +180,6 @@ class TagTreeDataProvider
     // TODO: (bdietz) - this is probably going to be pretty slow
     for(const filePath of this.walkSync(workspaceFolder)) {
     const fileInfo = this.getTagsFromFile(filePath);
-
       if (fileInfo.tags.size > 0) {
         files.push(fileInfo);
       }
