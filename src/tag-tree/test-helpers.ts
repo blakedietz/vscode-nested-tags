@@ -47,10 +47,9 @@ export function walkFromPath(path: string, tree) {
 }
 
 // @ts-ignore
-function createDeepSnapshot(object) {
+export function createDeepSnapshot(object) {
   return util.inspect(object, { depth: Infinity });
 }
-export { createDeepSnapshot };
 
 // @ts-ignore
 export function convertTreeToObject(objectToSerialize) {
