@@ -9,13 +9,14 @@ class FileNode {
   public key: string;
 
   constructor(
+    key: string,
     filePath: string,
     pathToNode: string,
     tags: string[],
     displayName: string
   ) {
     this.displayName = displayName;
-    this.key = filePath.replace(/\//g, "|");
+    this.key = key;
     this.filePath = filePath;
     this.pathToNode = `${pathToNode}/${this.key}`;
     this.tags = tags;

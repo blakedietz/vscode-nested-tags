@@ -3,12 +3,19 @@ import { FileNode } from "./file-node";
 class TagNode {
   public tags: Map<string, TagNode>;
   public files: Map<string, FileNode>;
+  public parent: TagNode | null;
 
   public displayName: string;
   public tag: string;
   public pathToNode: string;
 
-  constructor(tag: string, pathToNode: string, displayName = "") {
+  constructor(
+    parent = null,
+    tag: string,
+    pathToNode: string,
+    displayName = ""
+  ) {
+    this.parent = parent;
     this.displayName = displayName;
     this.files = new Map<string, FileNode>();
     this.pathToNode = pathToNode;
@@ -17,7 +24,8 @@ class TagNode {
   }
 
   public addTag(tag: string, pathToNode: string, displayName = tag) {
-    this.tags.set(tag, new TagNode(tag, pathToNode, displayName));
+    // @ts-ignore
+    this.tags.set(tag, new TagNode(this, tag, pathToNode, displayName));
   }
 
   public getTag(tag: string) {
@@ -34,6 +42,10 @@ class TagNode {
 
   public addFile(node: FileNode) {
     this.files.set(node.key, node);
+  }
+
+  public deleteFile(fileKey: string) {
+    this.files.delete(fileKey);
   }
 }
 

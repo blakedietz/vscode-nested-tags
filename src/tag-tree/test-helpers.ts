@@ -1,3 +1,5 @@
+import * as util from "util"; // has no default export;
+
 /**
  * Stole this from
  * https://stackoverflow.com/questions/43704904/how-to-stringify-objects-containing-es5-sets-and-maps
@@ -43,6 +45,12 @@ export function walkFromPath(path: string, tree) {
   // @ts-ignore
   return finalTagNode.files[file];
 }
+
+// @ts-ignore
+function createDeepSnapshot(object) {
+  return util.inspect(object, { depth: Infinity });
+}
+export { createDeepSnapshot };
 
 // @ts-ignore
 export function convertTreeToObject(objectToSerialize) {

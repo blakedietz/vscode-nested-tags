@@ -5,15 +5,29 @@ import { FileNode } from "./tag-tree/file-node";
 import { TagNode } from "./tag-tree/tag-node";
 import { TagTree } from "./tag-tree/tag-tree";
 
+function setsAreEqual(aS,bS) {
+  if (aS.size !== bS.size) {
+    return false;
+  }
+
+  for (const a of aS) {
+    if (!bS.has(a)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 class TagTreeDataProvider
   implements vscode.TreeDataProvider<TagNode | FileNode> {
   private tagTree: TagTree;
-  private _onDidChangeTreeData: vscode.EventEmitter<number | null> = new vscode.EventEmitter<number | null>();
+  private _onDidChangeTreeData: vscode.EventEmitter< TagNode | FileNode | null> = new vscode.EventEmitter<TagNode | FileNode | null>();
   // An optional event to signal that an element or root has changed.
   // This will trigger the view to update the changed element/root and its children recursively (if shown).
   // To signal that root has changed, do not pass any argument or pass undefined or null.
   // TODO: (bdietz) - I wonder if this is going to need to be of the type <TagNode | FileNode>
-  readonly onDidChangeTreeData: vscode.Event<number | null> = this._onDidChangeTreeData.event;
+  readonly onDidChangeTreeData: vscode.Event< TagNode | FileNode | null> = this._onDidChangeTreeData.event;
 
   constructor() {
     // vscode.window.onDidChangeActiveTextEditor(() => this.onActiveEditorChanged());
@@ -131,7 +145,12 @@ class TagTreeDataProvider
 
   private updateTreeForFile(filePath: string) {
       const fileInfo = this.getTagsFromFile(filePath);
-      console.log(fileInfo);
+      const tagsInTreeForFile = this.tagTree.getTagsForFile(filePath);
+      const isUpdateNeeded = !setsAreEqual(fileInfo.tags, tagsInTreeForFile);
+      if (isUpdateNeeded) {
+        // TODO: (bdietz) - delete node
+        // TODO: (bdietz) - add node
+      }
   }
 
   // TODO: (bdietz) - the method name is kind of misleading because it returns both filePath and tags
