@@ -43,6 +43,9 @@ class TagTree {
 
   public getTagsForFile(filePath: string) {
     const fileKey = this.createKeyForFile(filePath);
+    if (!this.fileIndex.has(fileKey)) {
+      return new Set();
+    }
     const tagNodes = this.fileIndex.get(fileKey)!;
     return tagNodes.reduce((tags, tagNode) => {
       return tags.add(tagNode.tag);
