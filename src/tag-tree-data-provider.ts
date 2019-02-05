@@ -38,6 +38,7 @@ class TagTreeDataProvider
     this.tagTree = new TagTree();
 
     // Add all files in the current workspace folder to the tag tree
+    // @ts-ignore
     const workspaceFolder = vscode.workspace.workspaceFolders[0].uri.fsPath;
     const files = [];
 
@@ -54,6 +55,13 @@ class TagTreeDataProvider
     }
   }
 
+  /**
+   * Required for implementing TreeDataProvider interface.
+   *
+   * @param {(TagNode | FileNode)} element
+   * @returns
+   * @memberof TagTreeDataProvider
+   */
   public getChildren(element: TagNode | FileNode) {
     if (element instanceof FileNode) {
       return [];
@@ -67,6 +75,13 @@ class TagTreeDataProvider
     }
   }
 
+  /**
+   * Required for implementing TreeDataProvider interface.
+   *
+   * @param {(TagNode | FileNode)} element
+   * @returns {vscode.TreeItem}
+   * @memberof TagTreeDataProvider
+   */
   public getTreeItem(element: TagNode | FileNode): vscode.TreeItem {
     const tagTreeNode = this.tagTree.getNode(element.pathToNode);
     const { displayName } = tagTreeNode;
@@ -172,8 +187,9 @@ class TagTreeDataProvider
   private getTagsFromFileText(fileContents: string, filePath: string): IFileInfo {
     return fileContents
         .split("\n")
-        .reduce((accumulator,currentLine) => {
+        .reduce((accumulator, currentLine) => {
           if (currentLine.includes('@nested-tags:')) {
+            // @ts-ignore
             const tagsToAdd = currentLine
             .split('@nested-tags:')
             .pop()
