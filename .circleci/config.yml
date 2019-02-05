@@ -15,7 +15,7 @@ jobs:
           key: project-name-{{ .Branch }}-{{ checksum "package.json" }}
       - run:
           name: Install node.js Dependencies with npm
-          command: npm
+          command: npm i
       - save_cache:
           key: project-name-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
@@ -37,7 +37,7 @@ jobs:
           key: project-name-{{ .Branch }}-{{ checksum "package.json" }}
       - run:
           name: Install node.js Dependencies with yarn
-          command: yarn
+          command: npm i
       - save_cache:
           key: project-name-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
@@ -45,10 +45,10 @@ jobs:
             - node_modules
       - run:
           name: Run unit tests
-          command: yarn run test
+          command: npm run test
       - run:
           name: Build the source
-          command: yarn run build
+          command: npm run build
 
 workflows:
   version: 2
@@ -62,6 +62,7 @@ workflows:
                 - beta
                 - alpha
                 - next
+
   build-feature-branch:
     jobs:
       - build-deploy-feature-branch:
