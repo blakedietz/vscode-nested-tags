@@ -24,9 +24,6 @@ jobs:
           name: Run unit tests
           command: npm run test
       - run:
-          name: Build the source
-          command: npm run build
-      - run:
           name: Run semantic-release to generate new git tags and next version
           command: npm run semantic-release
 
@@ -58,7 +55,6 @@ workflows:
   build-release-branches:
     jobs:
       - build-deploy-release-branches:
-          context: timecapture-org-global
           filters:
             branches:
               only:
@@ -69,7 +65,6 @@ workflows:
   build-feature-branch:
     jobs:
       - build-deploy-feature-branch:
-          context: timecapture-org-global
           filters:
             branches:
               only:
