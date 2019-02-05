@@ -7,14 +7,7 @@
   "engines": {
     "vscode": "^1.30.0"
   },
-  "categories": [
-    "Markdown",
-    "Notes",
-    "Organization"
-  ],
-  "activationEvents": [
-    "onView:tagTreeView"
-  ],
+  "repository": {"url": "https://github.com/blakedietz/vscode-nested-tags"},
   "main": "./out/extension.js",
   "contributes": {
     "views": {
