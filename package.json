@@ -55,6 +55,7 @@
     "lint-staged": "^8.1.0",
     "prettier": "^1.15.3",
     "semantic-release": "16.0.0-beta.9",
+    "semantic-release-vsce":"2.1.2",
     "ts-jest": "^23.10.5",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.17.0",
@@ -64,6 +65,23 @@
   "dependencies": {
     "recursive-readdir": "2.2.2",
     "vscode": "^1.1.25"
+  },
+  "release": {
+    "verifyConditions": [
+      "semantic-release-vsce",
+      "@semantic-release/github"
+    ],
+    "prepare": {
+      "path": "semantic-release-vsce",
+      "packageVsix": "vscode-nested-tags.vsix"
+    },
+    "publish": [
+      "semantic-release-vsce",
+      {
+        "path": "@semantic-release/github",
+        "assets": "vscode-nested-tags.vsix"
+      }
+    ]
   },
   "config": {
     "loglevel": "verbose",
