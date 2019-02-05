@@ -11,6 +11,9 @@
     "url": "https://github.com/blakedietz/vscode-nested-tags"
   },
   "main": "./out/extension.js",
+  "activationEvents": [
+    "onView:tagTreeView"
+  ],
   "contributes": {
     "views": {
       "explorer": [
