@@ -2,6 +2,7 @@
   "name": "vscode-nested-tags",
   "displayName": "Nested Tags",
   "description": "",
+  "publisher": "vscode-nested-tags",
   "version": "0.0.0",
   "engines": {
     "vscode": "^1.30.0"
