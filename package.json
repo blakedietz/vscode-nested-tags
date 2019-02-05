@@ -62,6 +62,7 @@
     "typescript": "^3.2.2"
   },
   "dependencies": {
+    "recursive-readdir": "2.2.2",
     "vscode": "^1.1.25"
   },
   "config": {
@@ -77,7 +78,7 @@
     }
   },
   "lint-staged": {
-    "*.{ts,md}": [
+    "*.{ts}": [
       "prettier --write",
       "git add"
     ]
