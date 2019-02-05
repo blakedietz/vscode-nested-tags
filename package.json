@@ -7,14 +7,11 @@
   "engines": {
     "vscode": "^1.30.0"
   },
-  "categories": [
-    "Markdown",
-    "Notes",
-    "Organization"
-  ],
+  "categories": [ ],
   "activationEvents": [
     "onView:tagTreeView"
   ],
+  "repository": {"url": "https://github.com/blakedietz/vscode-nested-tags"},
   "main": "./out/extension.js",
   "contributes": {
     "views": {
@@ -56,16 +53,16 @@
     "lint-staged": "^8.1.0",
     "prettier": "^1.15.3",
     "semantic-release": "16.0.0-beta.9",
-    "semantic-release-vsce":"2.1.2",
+    "semantic-release-vsce": "2.1.2",
     "ts-jest": "^23.10.5",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.17.0",
     "typedoc": "^0.14.2",
-    "typescript": "^3.2.2"
+    "typescript": "^3.2.2",
+    "vscode": "^1.1.25"
   },
   "dependencies": {
-    "recursive-readdir": "2.2.2",
-    "vscode": "^1.1.25"
+    "recursive-readdir": "2.2.2"
   },
   "release": {
     "verifyConditions": [
