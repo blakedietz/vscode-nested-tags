@@ -2,7 +2,6 @@
   "name": "vscode-nested-tags",
   "displayName": "Nested Tags",
   "description": "",
-  "publisher": "vscode-nested-tags",
   "version": "0.0.0",
   "engines": {
     "vscode": "^1.30.0"
@@ -11,19 +10,6 @@
     "url": "https://github.com/blakedietz/vscode-nested-tags"
   },
   "main": "./out/extension.js",
-  "activationEvents": [
-    "onView:tagTreeView"
-  ],
-  "contributes": {
-    "views": {
-      "explorer": [
-        {
-          "id": "tagTreeView",
-          "name": "Tag Tree"
-        }
-      ]
-    }
-  },
   "scripts": {
     "build": "tsc -build tsconfig.json",
     "build:watch": "tsc -build tsconfig.json -w",
@@ -63,25 +49,23 @@
     "vscode": "^1.1.25"
   },
   "dependencies": {
+    "debounce": "^1.2.0",
     "recursive-readdir": "2.2.2"
   },
-  "release": {
-    "verifyConditions": [
-      "semantic-release-vsce",
-      "@semantic-release/github"
-    ],
-    "prepare": {
-      "path": "semantic-release-vsce",
-      "packageVsix": "vscode-nested-tags.vsix"
-    },
-    "publish": [
-      "semantic-release-vsce",
-      {
-        "path": "@semantic-release/github",
-        "assets": "vscode-nested-tags.vsix"
-      }
-    ]
+  "activationEvents": [
+    "onView:tagTreeView"
+  ],
+  "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "id": "tagTreeView",
+          "name": "Tag Tree"
+        }
+      ]
+    }
   },
+  "publisher": "vscode-nested-tags",
   "config": {
     "loglevel": "verbose",
     "commitizen": {
@@ -98,6 +82,23 @@
     "*.{ts}": [
       "prettier --write",
       "git add"
+    ]
+  },
+  "release": {
+    "verifyConditions": [
+      "semantic-release-vsce",
+      "@semantic-release/github"
+    ],
+    "prepare": {
+      "path": "semantic-release-vsce",
+      "packageVsix": "vscode-nested-tags.vsix"
+    },
+    "publish": [
+      "semantic-release-vsce",
+      {
+        "path": "@semantic-release/github",
+        "assets": "vscode-nested-tags.vsix"
+      }
     ]
   }
 }
