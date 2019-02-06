@@ -31,7 +31,7 @@ class TagTreeDataProvider
     // });
 
     // Register the extension to events of interest
-    vscode.workspace.onDidChangeTextDocument(debounce(e => this.onDocumentChanged(e), 500));
+    vscode.workspace.onDidChangeTextDocument(debounce((e: vscode.TextDocumentChangeEvent) => this.onDocumentChanged(e), 500));
     vscode.workspace.onWillSaveTextDocument((e) => {
       this.onWillSaveTextDocument(e);
     });
