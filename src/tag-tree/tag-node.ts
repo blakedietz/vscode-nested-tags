@@ -49,4 +49,17 @@ class TagNode {
   }
 }
 
-export { TagNode };
+interface ITagNodeSort {
+  (tagA: TagNode, tagB: TagNode): number;
+}
+const tagNodeSort: ITagNodeSort = (tagA: TagNode, tagB: TagNode) => {
+  if (tagA.tag < tagB.tag) {
+    return -1;
+  } else if (tagA.tag > tagB.tag) {
+    return 1;
+  } else {
+    return 0;
+  }
+};
+
+export { TagNode, tagNodeSort };

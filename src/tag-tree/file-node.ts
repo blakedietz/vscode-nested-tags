@@ -23,4 +23,18 @@ class FileNode {
   }
 }
 
-export { FileNode };
+interface IFileNodeSort {
+  (fileA: FileNode, fileB: FileNode): number;
+}
+
+const fileNodeSort: IFileNodeSort = (fileA: FileNode, fileB: FileNode) => {
+  if (fileA.filePath < fileB.filePath) {
+    return -1;
+  } else if (fileA.filePath > fileB.filePath) {
+    return 1;
+  } else {
+    return 0;
+  }
+};
+
+export { FileNode, fileNodeSort };
