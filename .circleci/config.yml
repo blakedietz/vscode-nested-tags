@@ -76,4 +76,5 @@ workflows:
                 - /test.*/
                 - /style.*/
                 - /refactor.*/
+                - /release.*/
                 - /revert.*/
