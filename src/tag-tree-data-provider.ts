@@ -3,8 +3,8 @@ import * as fs from "fs";
 import * as path from "path";
 import * as vscode from "vscode";
 import { setsAreEqual } from "./sets";
-import { FileNode } from "./tag-tree/file-node";
-import { TagNode } from "./tag-tree/tag-node";
+import { FileNode, fileNodeSort } from "./tag-tree/file-node";
+import { TagNode, tagNodeSort } from "./tag-tree/tag-node";
 import { TagTree } from "./tag-tree/tag-tree";
 
 interface IFileInfo {
@@ -67,12 +67,23 @@ class TagTreeDataProvider
     if (element instanceof FileNode) {
       return [];
     } else if (element === undefined) {
-      return [
-        ...this.tagTree.root.tags.values(),
-        ...this.tagTree.root.files.values()
+      // Convert the tags and files sets to arrays, then sort the arrays add tags first, then files
+      const children = [
+        ...[...this.tagTree.root.tags.values()]
+        .sort(tagNodeSort),
+        ...[...this.tagTree.root.files.values()]
+        .sort(fileNodeSort)
       ];
+
+      return children;
     } else {
-      return [...element.tags.values(), ...element.files.values()];
+      // Convert the tags and files sets to arrays, then sort the arrays add tags first, then files
+      const children = [
+        ...[...element.tags.values()].sort(tagNodeSort),
+        ...[...element.files.values()].sort(fileNodeSort)
+        ];
+
+      return children;
     }
   }
 
