@@ -66,6 +66,11 @@
       ]
     }
   },
+  "icon": "images/icon.png",
+	"galleryBanner": {
+		"color": "#073642",
+		"theme": "dark"
+	},
   "publisher": "vscode-nested-tags",
   "config": {
     "loglevel": "verbose",
