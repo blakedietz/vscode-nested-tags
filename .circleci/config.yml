@@ -68,6 +68,7 @@ workflows:
                 - /build.*/
                 - /chore.*/
                 - /ci.*/
+                - /develop.*/
                 - /docs.*/
                 - /experiment.*/
                 - /feature.*/
