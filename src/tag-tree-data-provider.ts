@@ -1,4 +1,4 @@
-import {debounce} from "debounce";
+import { debounce } from "debounce";
 import * as fs from "fs";
 import * as path from "path";
 import * as vscode from "vscode";
@@ -31,6 +31,7 @@ class TagTreeDataProvider
     // });
 
     // Register the extension to events of interest
+    // Debounce to improve performance. Otherwise a file read would occur during each of the user's change to the document.
     vscode.workspace.onDidChangeTextDocument(debounce((e: vscode.TextDocumentChangeEvent) => this.onDocumentChanged(e), 500));
     vscode.workspace.onWillSaveTextDocument((e) => {
       this.onWillSaveTextDocument(e);
