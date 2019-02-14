@@ -26,6 +26,7 @@
     "watch": "tsc -watch -p ./"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^3.0.2",
     "@semantic-release/commit-analyzer": "^6.1.0",
     "@semantic-release/exec": "^3.3.2",
     "@semantic-release/git": "^7.0.8",
@@ -92,20 +93,15 @@
     ]
   },
   "release": {
-    "verifyConditions": [
-      "semantic-release-vsce",
-      "@semantic-release/github"
-    ],
-    "prepare": {
-      "path": "semantic-release-vsce",
-      "packageVsix": "vscode-nested-tags.vsix"
-    },
-    "publish": [
-      "semantic-release-vsce",
-      {
-        "path": "@semantic-release/github",
-        "assets": "vscode-nested-tags.vsix"
-      }
+    "plugins": [
+      ["semantic-release-vsce", {
+          "path": "@semantic-release/github",
+          "assets": "vscode-nested-tags.vsix"
+      }],
+      "@semantic-release/github",
+      ["@semantic-release/changelog", {
+        "changelogFile": "./CHANGELOG.md"
+      }]
     ]
   }
 }
