@@ -1,6 +1,6 @@
 import { debounce } from "debounce";
 import * as fs from "fs";
-import * as path from "path";
+import * as recursiveReadDir from "recursive-readdir";
 import * as vscode from "vscode";
 import { setsAreEqual } from "./sets";
 import { FileNode, fileNodeSort } from "./tag-tree/file-node";
@@ -25,13 +25,9 @@ class TagTreeDataProvider
   readonly onDidChangeTreeData: vscode.Event< TagNode | FileNode | null> = this._onDidChangeTreeData.event;
 
   constructor() {
-    // vscode.window.onDidChangeActiveTextEditor(() => this.onActiveEditorChanged());
-    // vscode.workspace.onDidSaveTextDocument((e) => {
-    //   console.log(e);
-    // });
-
-    // Register the extension to events of interest
-    // Debounce to improve performance. Otherwise a file read would occur during each of the user's change to the document.
+    /* Register the extension to events of interest
+     * Debounce to improve performance. Otherwise a file read would occur during each of the user's change to the document.
+     */
     vscode.workspace.onDidChangeTextDocument(debounce((e: vscode.TextDocumentChangeEvent) => this.onDocumentChanged(e), 500));
     vscode.workspace.onWillSaveTextDocument((e) => {
       this.onWillSaveTextDocument(e);
@@ -39,21 +35,23 @@ class TagTreeDataProvider
 
     this.tagTree = new TagTree();
 
-    // Add all files in the current workspace folder to the tag tree
-    // @ts-ignore
-    const workspaceFolder = vscode.workspace.workspaceFolders[0].uri.fsPath;
-    const files = [];
+    /* Add all files in the current workspace folder to the tag tree
+     * @ts-ignore
+     */
+    if (vscode.workspace.workspaceFolders!.length > 0) {
+      vscode.workspace.workspaceFolders!.forEach(workspaceFolder => {
+        const { fsPath } = workspaceFolder.uri;
+        recursiveReadDir(fsPath, ["!*.md"], (error: any, files: any) => {
+            for (const filePath of files) {
+                const fileInfo = this.getTagsFromFileOnFileSystem(filePath);
+                if (fileInfo.tags.size > 0) {
+                  this.tagTree.addFile(fileInfo.filePath, [...fileInfo.tags], fileInfo.filePath);
+                }
+            }
 
-    // TODO: (bdietz) - this is probably going to be pretty slow
-    for(const filePath of this.walkFileSystemSync(workspaceFolder)) {
-    const fileInfo = this.getTagsFromFileOnFileSystem(filePath);
-      if (fileInfo.tags.size > 0) {
-        files.push(fileInfo);
-      }
-    }
-
-    for (const fileInfo of files) {
-      this.tagTree.addFile(fileInfo.filePath, [...fileInfo.tags], fileInfo.filePath);
+            this._onDidChangeTreeData.fire();
+          });
+      });
     }
   }
 
@@ -114,7 +112,7 @@ class TagTreeDataProvider
    * @param changeEvent
    */
   private onWillSaveTextDocument(changeEvent: vscode.TextDocumentWillSaveEvent) {
-    if (changeEvent.document.isDirty) {
+    if (changeEvent.document.isDirty && changeEvent.document.languageId === "markdown") {
       const filePath = changeEvent.document.fileName;
       const fileInfo = this.getTagsFromFileOnFileSystem(filePath);
       const tagsInTreeForFile = this.tagTree.getTagsForFile(filePath);
@@ -132,37 +130,21 @@ class TagTreeDataProvider
    */
   private onDocumentChanged(changeEvent: vscode.TextDocumentChangeEvent): void {
     const filePath = changeEvent.document.fileName;
-    const fileInfo = this.getTagsFromFileText(changeEvent.document.getText(), filePath);
-    const tagsInTreeForFile = this.tagTree.getTagsForFile(filePath);
-    const isUpdateNeeded = !setsAreEqual(fileInfo.tags, tagsInTreeForFile);
-    /*
-     * This could be potentially performance intensive due to the number of changes that could
-     * be made to a document and how large the document is. There will definitely need to be some
-     * work done around TagTree to make sure that the code
-     */
-    if (isUpdateNeeded) {
-      this.tagTree.deleteFile(filePath);
-      this.tagTree.addFile(filePath, [...fileInfo.tags.values()], filePath);
-      // TODO: (bdietz) - this._onDidChangeTreeData.fire(specificNode?)
-      this._onDidChangeTreeData.fire();
-    }
-  }
-
- /**
-  * NOTE: Stole this from https://gist.github.com/luciopaiva/4ba78a124704007c702d0293e7ff58dd.
-  *
-  * Recursively walk through the file system synchronously.
-  */
-  private *walkFileSystemSync(dir: string): IterableIterator<string> {
-    const files = fs.readdirSync(dir);
-
-    for (const file of files) {
-      const pathToFile = path.join(dir, file);
-      const isDirectory = fs.statSync(pathToFile).isDirectory();
-      if (isDirectory) {
-        yield* this.walkFileSystemSync(pathToFile);
-      } else {
-        yield pathToFile;
+    // If the file has been saved and the file is a markdown file allow for making changes to the tag tree
+    if (filePath !== undefined && changeEvent.document.languageId === "markdown") {
+      const fileInfo = this.getTagsFromFileText(changeEvent.document.getText(), filePath);
+      const tagsInTreeForFile = this.tagTree.getTagsForFile(filePath);
+      const isUpdateNeeded = !setsAreEqual(fileInfo.tags, tagsInTreeForFile);
+      /*
+      * This could be potentially performance intensive due to the number of changes that could
+      * be made to a document and how large the document is. There will definitely need to be some
+      * work done around TagTree to make sure that the code
+      */
+      if (isUpdateNeeded) {
+        this.tagTree.deleteFile(filePath);
+        this.tagTree.addFile(filePath, [...fileInfo.tags.values()], filePath);
+        // TODO: (bdietz) - this._onDidChangeTreeData.fire(specificNode?)
+        this._onDidChangeTreeData.fire();
       }
     }
   }
@@ -210,6 +192,7 @@ class TagTreeDataProvider
             .split(',');
             return {...accumulator, tags: new Set([...accumulator.tags,...tagsToAdd])};
           }
+
           return accumulator;
         }, { tags: new Set(), filePath });
   }
