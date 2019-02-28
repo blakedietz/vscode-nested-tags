@@ -1,6 +1,5 @@
 import { debounce } from "debounce";
 import * as fs from "fs";
-import * as recursiveReadDir from "recursive-readdir";
 import * as vscode from "vscode";
 import { setsAreEqual } from "./sets";
 import { FileNode, fileNodeSort } from "./tag-tree/file-node";
@@ -35,24 +34,20 @@ class TagTreeDataProvider
 
     this.tagTree = new TagTree();
 
-    /* Add all files in the current workspace folder to the tag tree
-     * @ts-ignore
+    /**
+     * Add all files in the current workspace folder to the tag tree
      */
-    if (vscode.workspace.workspaceFolders!.length > 0) {
-      vscode.workspace.workspaceFolders!.forEach(workspaceFolder => {
-        const { fsPath } = workspaceFolder.uri;
-        recursiveReadDir(fsPath, ["!*.md"], (error: any, files: any) => {
-            for (const filePath of files) {
-                const fileInfo = this.getTagsFromFileOnFileSystem(filePath);
-                if (fileInfo.tags.size > 0) {
-                  this.tagTree.addFile(fileInfo.filePath, [...fileInfo.tags], fileInfo.filePath);
-                }
-            }
+    (async () => {
+        const uris = await vscode.workspace.findFiles("**/*.md");
+        const infos = await Promise.all(
+          uris.map(uri => this.getTagsFromFileOnFileSystem(uri.fsPath))
+        );
+        infos
+          .filter(info => info.tags.size > 0)
+          .forEach(info => this.tagTree.addFile(info.filePath, [...info.tags], info.filePath));
 
-            this._onDidChangeTreeData.fire();
-          });
-      });
-    }
+        this._onDidChangeTreeData.fire();
+    })();
   }
 
   /**
@@ -102,7 +97,15 @@ class TagTreeDataProvider
       ? vscode.TreeItemCollapsibleState.None
       : vscode.TreeItemCollapsibleState.Collapsed;
 
-    return new vscode.TreeItem(displayName, collapsibleState);
+    const result = new vscode.TreeItem(displayName, collapsibleState);
+    if (isFile) {
+      result.command = {
+        arguments: [ vscode.Uri.file(tagTreeNode.filePath) ],
+        command: "vscode.open",
+        title: "Jump to tag reference"
+      };
+    }
+    return result;
   }
 
   /**
@@ -111,10 +114,10 @@ class TagTreeDataProvider
    * any changes to tags for a document before saving.
    * @param changeEvent
    */
-  private onWillSaveTextDocument(changeEvent: vscode.TextDocumentWillSaveEvent) {
+  private async onWillSaveTextDocument(changeEvent: vscode.TextDocumentWillSaveEvent): Promise<void> {
     if (changeEvent.document.isDirty && changeEvent.document.languageId === "markdown") {
       const filePath = changeEvent.document.fileName;
-      const fileInfo = this.getTagsFromFileOnFileSystem(filePath);
+      const fileInfo = await this.getTagsFromFileOnFileSystem(filePath);
       const tagsInTreeForFile = this.tagTree.getTagsForFile(filePath);
       this.updateTreeForFile(filePath, tagsInTreeForFile, fileInfo.tags);
     }
@@ -202,8 +205,9 @@ class TagTreeDataProvider
    *
    * @param filePath The local filesystem path
    */
-  private getTagsFromFileOnFileSystem(filePath: string): IFileInfo {
-      return this.getTagsFromFileText(fs.readFileSync(filePath).toString(), filePath);
+  private async getTagsFromFileOnFileSystem(filePath: string): Promise<IFileInfo> {
+      const buffer = await fs.promises.readFile(filePath);
+      return this.getTagsFromFileText(buffer.toString(), filePath);
     }
 }
 
