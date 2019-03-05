@@ -92,14 +92,20 @@
   },
   "release": {
     "plugins": [
-      ["semantic-release-vsce", {
+      [
+        "semantic-release-vsce",
+        {
           "path": "@semantic-release/github",
           "assets": "vscode-nested-tags.vsix"
-      }],
+        }
+      ],
       "@semantic-release/github",
-      ["@semantic-release/changelog", {
-        "changelogFile": "./CHANGELOG.md"
-      }]
+      [
+        "@semantic-release/changelog",
+        {
+          "changelogFile": "./CHANGELOG.md"
+        }
+      ]
     ]
   }
 }
