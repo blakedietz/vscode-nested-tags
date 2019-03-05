@@ -52,8 +52,7 @@
     "vscode": "^1.1.25"
   },
   "dependencies": {
-    "debounce": "^1.2.0",
-    "recursive-readdir": "2.2.2"
+    "debounce": "^1.2.0"
   },
   "activationEvents": [
     "onView:tagTreeView"
@@ -94,14 +93,20 @@
   },
   "release": {
     "plugins": [
-      ["semantic-release-vsce", {
+      [
+        "semantic-release-vsce",
+        {
           "path": "@semantic-release/github",
           "assets": "vscode-nested-tags.vsix"
-      }],
-      ["@semantic-release/changelog", {
-        "changelogFile": "./CHANGELOG.md"
-      }],
-      "@semantic-release/github"
+        }
+      ],
+      "@semantic-release/github",
+      [
+        "@semantic-release/changelog",
+        {
+          "changelogFile": "./CHANGELOG.md"
+        }
+      ]
     ]
   }
 }
