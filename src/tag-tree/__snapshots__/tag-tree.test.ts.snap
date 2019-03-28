@@ -395,15 +395,7 @@ exports[`TagTree deleteFile Delete file under shared tag with empty node 1`] = `
                tags: [ 'hello' ] } },
           pathToNode: 'hello',
           tag: 'hello',
-          tags:
-           Map {
-             'world' => TagNode {
-               parent: [Circular],
-               displayName: 'world',
-               files: Map {},
-               pathToNode: 'hello/world',
-               tag: 'world',
-               tags: Map {} } } } } },
+          tags: Map {} } } },
   fileIndex:
    Map {
      '|Users|test|bar.md' => [ TagNode {
@@ -426,15 +418,7 @@ exports[`TagTree deleteFile Delete file under shared tag with empty node 1`] = `
               tags: [ 'hello' ] } },
          pathToNode: 'hello',
          tag: 'hello',
-         tags:
-          Map {
-            'world' => TagNode {
-              parent: [Circular],
-              displayName: 'world',
-              files: Map {},
-              pathToNode: 'hello/world',
-              tag: 'world',
-              tags: Map {} } } } ] } }"
+         tags: Map {} } ] } }"
 `;
 
 exports[`TagTree deleteFile Delete node under root 1`] = `
