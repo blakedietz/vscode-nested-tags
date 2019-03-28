@@ -32,6 +32,7 @@
     "@semantic-release/git": "^7.0.8",
     "@semantic-release/github": "^5.2.9",
     "@semantic-release/npm": "^5.1.4",
+    "@semantic-release/release-notes-generator": "^7.1.4",
     "@types/debounce": "^1.2.0",
     "@types/jest": "^23.3.12",
     "@types/node": "^10.12.18",
@@ -93,18 +94,37 @@
   },
   "release": {
     "plugins": [
+          [
+            "@semantic-release/release-notes-generator",
+            {
+              "preset": "angular",
+              "parserOpts": {
+                "noteKeywords": [
+                  "BREAKING CHANGE",
+                  "BREAKING CHANGES",
+                  "BREAKING"
+                ]
+              },
+              "writerOpts": {
+                "commitsSort": [
+                  "subject",
+                  "scope"
+                ]
+              }
+            }
+          ],
+      [
+        "@semantic-release/changelog",
+        {
+          "changelogFile": "./CHANGELOG.md"
+        }
+      ],
+      "@semantic-release/github",
       [
         "semantic-release-vsce",
         {
           "path": "@semantic-release/github",
           "assets": "vscode-nested-tags.vsix"
-        }
-      ],
-      "@semantic-release/github",
-      [
-        "@semantic-release/changelog",
-        {
-          "changelogFile": "./CHANGELOG.md"
         }
       ]
     ]
