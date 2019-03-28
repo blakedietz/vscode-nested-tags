@@ -13,6 +13,7 @@ interface IFileInfo {
 
 class TagTreeDataProvider
   implements vscode.TreeDataProvider<TagNode | FileNode> {
+
   private tagTree: TagTree;
   // Responsible for notifying the TreeDataProvider to update for the specified element in tagTree
   private _onDidChangeTreeData: vscode.EventEmitter< TagNode | FileNode | null> = new vscode.EventEmitter<TagNode | FileNode | null>();

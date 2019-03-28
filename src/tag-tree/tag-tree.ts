@@ -114,10 +114,12 @@ class TagTree {
 
     while (currentNode!.files.size === 0 && currentNode!.tags.size === 0) {
       const { parent } = currentNode;
+      // We're not at the root of the tree yet
       if (parent !== null) {
-        parent!.deleteTag(node.tag);
+        parent!.deleteTag(currentNode.tag);
         // @ts-ignore
         currentNode = parent;
+      // At this point we've hit the root of the tree
       } else {
         break;
       }

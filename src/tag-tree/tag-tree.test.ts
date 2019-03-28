@@ -29,6 +29,19 @@ describe("TagTree", () => {
       tagTree.deleteFile(filePath);
       expect(createDeepSnapshot(tagTree)).toMatchSnapshot();
     });
+
+    test("Move tag tree from one top level node to another", () => {
+      const tagTree = new TagTree();
+      const filePath = "/Users/test/foo.md";
+      tagTree.addFile(filePath, ["hello/world"], "foo.md");
+      tagTree.deleteFile(filePath);
+      tagTree.addFile(filePath, ["goodbye/world"], "foo.md");
+      const tag = tagTree.root.getTag("hello");
+      const renamedTag = tagTree.root.getTag("goodbye");
+
+      expect(tag).toBeUndefined();
+      expect(renamedTag).toBeDefined();
+    });
   });
   describe("getTagsForFile", () => {
     test("Retrieves all tags for a file", () => {
