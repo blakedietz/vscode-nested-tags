@@ -23,7 +23,7 @@
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch --passWithNoTests",
     "vscode:prepublish": "npm run build",
-    "watch": "tsc -watch -p ./"
+    "watch": "npm run build:watch"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^3.0.2",
