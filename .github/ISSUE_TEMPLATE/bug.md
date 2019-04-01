@@ -4,6 +4,8 @@ labels: bug
 assignees: blakedietz
 ---
 
+## Description
+
 ## What are the steps to reproduce this issue
 
 1. Clicked on this
