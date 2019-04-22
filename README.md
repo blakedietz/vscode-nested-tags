@@ -9,10 +9,19 @@ View your notes without being limited by your file system's hierarchy.
 Markdown files with the directive
 
 ```markdown
-<!--@nested-tags:topic,example-->
+<!--@nested-tags:topic,here/is/a/nested/example-->
 ```
 
-Will be visible from the file tab under a "Tag Tree" view.
+or yaml frontmatter with a tags property
+
+```
+---
+title: Hello nested tags
+tags: topic,here/is/a/nested/example
+---
+```
+
+will be visible from the file tab under a "Tag Tree" view.
 
 ## Requirements
 
