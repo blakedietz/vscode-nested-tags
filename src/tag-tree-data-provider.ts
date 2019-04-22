@@ -5,6 +5,7 @@ import { setsAreEqual } from "./sets";
 import { FileNode, fileNodeSort } from "./tag-tree/file-node";
 import { TagNode, tagNodeSort } from "./tag-tree/tag-node";
 import { TagTree } from "./tag-tree/tag-tree";
+import * as grayMatter from "gray-matter";
 
 interface IFileInfo {
   tags: Set<string>;
@@ -184,6 +185,14 @@ class TagTreeDataProvider
    * @param filePath The local filesystem path
    */
   private getTagsFromFileText(fileContents: string, filePath: string): IFileInfo {
+
+    // Parse any yaml frontmatter and check for tags within that frontmatter
+    const { data }= grayMatter(fileContents) ;
+    let yamlTags = new Set();
+    if (data.tags) {
+      yamlTags = new Set([data.tags.split(',')]);
+    }
+
     return fileContents
         .split("\n")
         .reduce((accumulator, currentLine) => {
@@ -198,7 +207,7 @@ class TagTreeDataProvider
           }
 
           return accumulator;
-        }, { tags: new Set(), filePath });
+        }, { tags: new Set(...yamlTags), filePath });
   }
 
   /**
