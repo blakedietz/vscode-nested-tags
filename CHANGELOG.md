@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/blakedietz/vscode-nested-tags/compare/v1.4.0...v1.5.0) (2019-04-23)
+
+
+### Features
+
+* **docs:** Add changelog support ([a6f1de4](https://github.com/blakedietz/vscode-nested-tags/commit/a6f1de4))
+
 ## [1.4.0](https://github.com/blakedietz/vscode-nested-tags/compare/v1.3.0...v1.4.0) (2019-04-23)
 
 ### Features
