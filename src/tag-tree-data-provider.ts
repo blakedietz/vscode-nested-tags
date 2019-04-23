@@ -6,6 +6,8 @@ import { FileNode, fileNodeSort } from "./tag-tree/file-node";
 import { TagNode, tagNodeSort } from "./tag-tree/tag-node";
 import { TagTree } from "./tag-tree/tag-tree";
 import * as grayMatter from "gray-matter";
+import { Uri } from "vscode";
+import * as path from "path";
 
 interface IFileInfo {
   tags: Set<string>;
@@ -46,7 +48,11 @@ class TagTreeDataProvider
         );
         infos
           .filter(info => info.tags.size > 0)
-          .forEach(info => this.tagTree.addFile(info.filePath, [...info.tags], info.filePath));
+          .forEach(info => {
+            const displayName = this.getPathRelativeToWorkspaceFolder(Uri.file(info.filePath));
+
+            this.tagTree.addFile(info.filePath, [...info.tags], displayName);
+          });
 
         this._onDidChangeTreeData.fire();
     })();
@@ -147,7 +153,8 @@ class TagTreeDataProvider
       */
       if (isUpdateNeeded) {
         this.tagTree.deleteFile(filePath);
-        this.tagTree.addFile(filePath, [...fileInfo.tags.values()], filePath);
+        const displayName = this.getPathRelativeToWorkspaceFolder(Uri.file(filePath));
+        this.tagTree.addFile(filePath, [...fileInfo.tags.values()], displayName);
         // TODO: (bdietz) - this._onDidChangeTreeData.fire(specificNode?)
         this._onDidChangeTreeData.fire();
       }
@@ -164,7 +171,8 @@ class TagTreeDataProvider
       const isUpdateNeeded = !setsAreEqual(tagsBefore, tagsAfter);
       if (isUpdateNeeded) {
         this.tagTree.deleteFile(filePath);
-        this.tagTree.addFile(filePath, [...tagsAfter.values()], filePath);
+        const displayName = this.getPathRelativeToWorkspaceFolder(Uri.file(filePath));
+        this.tagTree.addFile(filePath, [...tagsAfter.values()], displayName);
         /*
          * TODO (bdietz) - this._onDidChangeTreeData.fire(specificNode?)
          * specifying the specific node would help to improve the efficiency of the tree refresh.
@@ -218,6 +226,19 @@ class TagTreeDataProvider
   private async getTagsFromFileOnFileSystem(filePath: string): Promise<IFileInfo> {
       const buffer = await fs.promises.readFile(filePath);
       return this.getTagsFromFileText(buffer.toString(), filePath);
+    }
+
+    /**
+     * 
+     * @param uri 
+     */
+    private getPathRelativeToWorkspaceFolder(uri: Uri): string {
+            const currentWorkspaceFolder = vscode.workspace.getWorkspaceFolder(uri);
+            const relativePath = typeof currentWorkspaceFolder !== "undefined"
+            ? path.relative(currentWorkspaceFolder.uri.path, uri.path)
+            : uri.path;
+
+            return relativePath;
     }
 }
 
