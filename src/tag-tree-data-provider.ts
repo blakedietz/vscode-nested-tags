@@ -198,7 +198,7 @@ class TagTreeDataProvider
     const { data }= grayMatter(fileContents) ;
     let yamlTags = new Set();
     if (data.tags) {
-      yamlTags = new Set([data.tags.split(',')]);
+      yamlTags = new Set([data.tags]);
     }
 
     return fileContents
