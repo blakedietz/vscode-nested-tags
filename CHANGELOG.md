@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/blakedietz/vscode-nested-tags/compare/v1.5.0...v1.5.1) (2019-04-24)
+
+
+### Bug Fixes
+
+* **yaml:** Actually implement yaml support ([cadb411](https://github.com/blakedietz/vscode-nested-tags/commit/cadb411)), closes [#18](https://github.com/blakedietz/vscode-nested-tags/issues/18)
+
 # [1.5.0](https://github.com/blakedietz/vscode-nested-tags/compare/v1.4.0...v1.5.0) (2019-04-23)
 
 
