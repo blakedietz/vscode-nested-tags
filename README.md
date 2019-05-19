@@ -12,12 +12,23 @@ Markdown files with the directive
 <!--@nested-tags:topic,here/is/a/nested/example-->
 ```
 
-or yaml frontmatter with a tags property
+or yaml frontmatter with a tags property (square brackets style)
 
-```
+```yaml
 ---
 title: Hello nested tags
-tags: topic,here/is/a/nested/example
+tags: [topic, here/is/a/nested/example]
+---
+```
+
+or yaml frontmatter with a tags property (unordered list style)
+
+```yaml
+---
+title: Hello nested tags
+tags:
+    - topic
+    - here/is/a/nested/example
 ---
 ```
 
