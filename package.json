@@ -67,7 +67,18 @@
           "name": "Tag Tree"
         }
       ]
-    }
+    },
+    "configuration": {
+      "type": "object",
+      "title": "nested-tags",
+      "properties": { 
+        "vscode-nested-tags.additionalFileTypes": {
+          "type":"array",
+          "default": [],
+          "description": "Add file types that you want nested tags to scan for @nested-tags annotations."
+        } 
+      }
+  }
   },
   "icon": "images/icon.png",
   "galleryBanner": {
