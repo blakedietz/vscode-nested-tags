@@ -251,6 +251,7 @@ class TagTreeDataProvider
 
     /**
      * Checks to see if a given file uri matches the file extensions that are user configured. 
+     * 
      * @param uri 
      */
     private matchesWatchedFileExtensions(uri: Uri) {
