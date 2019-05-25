@@ -42,7 +42,13 @@ class TagTreeDataProvider
      * Add all files in the current workspace folder to the tag tree
      */
     (async () => {
-        const uris = await vscode.workspace.findFiles("**/*.md");
+        // @ts-ignore
+        const additionalFileTypes: string[] = vscode.workspace.getConfiguration().get('vscode-nested-tags.additionalFileTypes');
+        const customGlobPattern = additionalFileTypes.length > 0
+        ? `,${additionalFileTypes.join(',')}`
+        : '';
+        const globPattern = `{md${customGlobPattern}}`;
+        const uris = await vscode.workspace.findFiles(`**/*.${globPattern}`);
         const infos = await Promise.all(
           uris.map(uri => this.getTagsFromFileOnFileSystem(uri.fsPath))
         );
@@ -123,7 +129,7 @@ class TagTreeDataProvider
    * @param changeEvent
    */
   private async onWillSaveTextDocument(changeEvent: vscode.TextDocumentWillSaveEvent): Promise<void> {
-    if (changeEvent.document.isDirty && changeEvent.document.languageId === "markdown") {
+    if (changeEvent.document.isDirty && this.matchesWatchedFileExtensions(changeEvent.document.uri)) {
       const filePath = changeEvent.document.fileName;
       const fileInfo = await this.getTagsFromFileOnFileSystem(filePath);
       const tagsInTreeForFile = this.tagTree.getTagsForFile(filePath);
@@ -141,8 +147,8 @@ class TagTreeDataProvider
    */
   private onDocumentChanged(changeEvent: vscode.TextDocumentChangeEvent): void {
     const filePath = changeEvent.document.fileName;
-    // If the file has been saved and the file is a markdown file allow for making changes to the tag tree
-    if (filePath !== undefined && changeEvent.document.languageId === "markdown") {
+    // If the file has been saved and the file is a watched file type allow for making changes to the tag tree
+    if (filePath !== undefined && this.matchesWatchedFileExtensions(changeEvent.document.uri)) {
       const fileInfo = this.getTagsFromFileText(changeEvent.document.getText(), filePath);
       const tagsInTreeForFile = this.tagTree.getTagsForFile(filePath);
       const isUpdateNeeded = !setsAreEqual(fileInfo.tags, tagsInTreeForFile);
@@ -209,7 +215,9 @@ class TagTreeDataProvider
             const tagsToAdd = currentLine
             .split('@nested-tags:')
             .pop()
-            .split('-->')[0]
+            // Do some best effort cleanup on common multi-line comment closing syntax
+            .replace('-->', '')
+            .replace('*/', '')
             .split(',');
             return {...accumulator, tags: new Set([...accumulator.tags,...tagsToAdd])};
           }
@@ -239,6 +247,23 @@ class TagTreeDataProvider
             : uri.path;
 
             return relativePath;
+    }
+
+    /**
+     * Checks to see if a given file uri matches the file extensions that are user configured. 
+     * 
+     * @param uri 
+     */
+    private matchesWatchedFileExtensions(uri: Uri) {
+      const supportedFileExtensions = new Set([
+        'md', 
+        // @ts-ignore
+        ...vscode.workspace.getConfiguration().get('vscode-nested-tags.additionalFileTypes')
+      ]);
+
+      const fileExtension = uri.fsPath.split('.').pop();
+
+      return supportedFileExtensions.has(fileExtension);
     }
 }
 
