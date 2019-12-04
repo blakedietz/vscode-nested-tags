@@ -18,7 +18,7 @@
     "docs": "./node_modules/.bin/typedoc --tsconfig tsconfig.json --out ./docs",
     "lint": "tslint -p tsconfig.json",
     "postinstall": "node ./node_modules/vscode/bin/install",
-    "prettify": "prettier --write src/**/*{.ts,.md}",
+    "prettify": "prettier --write \"src/**/*{.ts,.md}\"",
     "semantic-release": "semantic-release",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch --passWithNoTests",
@@ -43,12 +43,12 @@
     "jest": "^23.6.0",
     "lint-staged": "^8.1.0",
     "prettier": "^1.15.3",
-    "semantic-release": "16.0.0-beta.9",
+    "semantic-release": "^16.0.0-beta.39",
     "semantic-release-vsce": "2.1.2",
     "ts-jest": "^23.10.5",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.17.0",
-    "typedoc": "^0.14.2",
+    "typedoc": "^0.15.3",
     "typescript": "^3.2.2",
     "vscode": "^1.1.25"
   },
@@ -71,14 +71,14 @@
     "configuration": {
       "type": "object",
       "title": "nested-tags",
-      "properties": { 
+      "properties": {
         "vscode-nested-tags.additionalFileTypes": {
-          "type":"array",
+          "type": "array",
           "default": [],
           "description": "Add file types that you want nested tags to scan for @nested-tags annotations."
-        } 
+        }
       }
-  }
+    }
   },
   "icon": "images/icon.png",
   "galleryBanner": {
@@ -139,10 +139,15 @@
           "assets": "vscode-nested-tags.vsix"
         }
       ],
-      ["@semantic-release/git", {
-        "assets": ["./CHANGELOG.md"],
-        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-      }]
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "./CHANGELOG.md"
+          ],
+          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ]
     ]
   }
 }
