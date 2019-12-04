@@ -119,7 +119,7 @@ class TagTree {
         parent!.deleteTag(currentNode.tag);
         // @ts-ignore
         currentNode = parent;
-      // At this point we've hit the root of the tree
+        // At this point we've hit the root of the tree
       } else {
         break;
       }
