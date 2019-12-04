@@ -2,20 +2,14 @@ version: 2
 jobs:
   build-deploy-release-branches:
     docker:
-      - image: circleci/node:11.5.0
+      - image: circleci/node:12.13.0
     working_directory: ~/repo
 
     steps:
       - checkout
-      - restore_cache:
-          key: project-name-{{ .Branch }}-{{ checksum "package.json" }}
       - run:
           name: Install node.js Dependencies with npm
           command: npm i
-      - save_cache:
-          key: project-name-{{ .Branch }}-{{ checksum "package.json" }}
-          paths:
-            - node_modules
       - run:
           name: Run unit tests
           command: npm run test
@@ -25,19 +19,16 @@ jobs:
 
   build-deploy-feature-branch:
     docker:
-      - image: circleci/node:11.5.0
+      - image: circleci/node:12.13.0
     working_directory: ~/repo
     steps:
       - checkout
-      - restore_cache:
-          key: project-name-{{ .Branch }}-{{ checksum "package.json" }}
       - run:
           name: Install node.js Dependencies with npm
           command: npm i
       - save_cache:
           key: project-name-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
-            - ~/.cache/yarn
             - node_modules
       - run:
           name: Run unit tests
