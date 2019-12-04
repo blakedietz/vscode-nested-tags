@@ -2,551 +2,625 @@
 
 exports[`TagTree addNode Single depth path 1`] = `
 "TagTree {
-  root:
-   TagNode {
-     parent: null,
-     displayName: '',
-     files: Map {},
-     pathToNode: '',
-     tag: '',
-     tags:
-      Map {
-        'hello' => TagNode {
-          parent: [Circular],
-          displayName: 'hello',
-          files:
-           Map {
-             'foo.md' => FileNode {
-               displayName: 'foo.md',
-               key: 'foo.md',
-               filePath: 'foo.md',
-               pathToNode: 'hello/foo.md',
-               tags: [ 'hello' ] } },
-          pathToNode: 'hello',
-          tag: 'hello',
-          tags: Map {} } } },
-  fileIndex:
-   Map {
-     'foo.md' => [ TagNode {
-         parent:
-          TagNode {
-            parent: null,
-            displayName: '',
-            files: Map {},
-            pathToNode: '',
-            tag: '',
-            tags: Map { 'hello' => [Circular] } },
-         displayName: 'hello',
-         files:
-          Map {
-            'foo.md' => FileNode {
-              displayName: 'foo.md',
-              key: 'foo.md',
-              filePath: 'foo.md',
-              pathToNode: 'hello/foo.md',
-              tags: [ 'hello' ] } },
-         pathToNode: 'hello',
-         tag: 'hello',
-         tags: Map {} } ] } }"
+  root: TagNode {
+    parent: null,
+    displayName: '',
+    files: Map {},
+    pathToNode: '',
+    tag: '',
+    tags: Map {
+      'hello' => TagNode {
+        parent: [Circular],
+        displayName: 'hello',
+        files: Map {
+          'foo.md' => FileNode {
+            displayName: 'foo.md',
+            key: 'foo.md',
+            filePath: 'foo.md',
+            pathToNode: 'hello/foo.md',
+            tags: [ 'hello' ]
+          }
+        },
+        pathToNode: 'hello',
+        tag: 'hello',
+        tags: Map {}
+      }
+    }
+  },
+  fileIndex: Map {
+    'foo.md' => [
+      TagNode {
+        parent: TagNode {
+          parent: null,
+          displayName: '',
+          files: Map {},
+          pathToNode: '',
+          tag: '',
+          tags: Map { 'hello' => [Circular] }
+        },
+        displayName: 'hello',
+        files: Map {
+          'foo.md' => FileNode {
+            displayName: 'foo.md',
+            key: 'foo.md',
+            filePath: 'foo.md',
+            pathToNode: 'hello/foo.md',
+            tags: [ 'hello' ]
+          }
+        },
+        pathToNode: 'hello',
+        tag: 'hello',
+        tags: Map {}
+      }
+    ]
+  }
+}"
 `;
 
 exports[`TagTree addNode Two directories deep 1`] = `
 "TagTree {
-  root:
-   TagNode {
-     parent: null,
-     displayName: '',
-     files: Map {},
-     pathToNode: '',
-     tag: '',
-     tags:
-      Map {
-        'hello' => TagNode {
-          parent: [Circular],
+  root: TagNode {
+    parent: null,
+    displayName: '',
+    files: Map {},
+    pathToNode: '',
+    tag: '',
+    tags: Map {
+      'hello' => TagNode {
+        parent: [Circular],
+        displayName: 'hello',
+        files: Map {},
+        pathToNode: 'hello',
+        tag: 'hello',
+        tags: Map {
+          'world' => TagNode {
+            parent: [Circular],
+            displayName: 'world',
+            files: Map {
+              'foo.md' => FileNode {
+                displayName: 'foo.md',
+                key: 'foo.md',
+                filePath: 'foo.md',
+                pathToNode: 'hello/world/foo.md',
+                tags: [ 'hello/world' ]
+              }
+            },
+            pathToNode: 'hello/world',
+            tag: 'world',
+            tags: Map {}
+          }
+        }
+      }
+    }
+  },
+  fileIndex: Map {
+    'foo.md' => [
+      TagNode {
+        parent: TagNode {
+          parent: TagNode {
+            parent: null,
+            displayName: '',
+            files: Map {},
+            pathToNode: '',
+            tag: '',
+            tags: Map { 'hello' => [Circular] }
+          },
           displayName: 'hello',
           files: Map {},
           pathToNode: 'hello',
           tag: 'hello',
-          tags:
-           Map {
-             'world' => TagNode {
-               parent: [Circular],
-               displayName: 'world',
-               files:
-                Map {
-                  'foo.md' => FileNode {
-                    displayName: 'foo.md',
-                    key: 'foo.md',
-                    filePath: 'foo.md',
-                    pathToNode: 'hello/world/foo.md',
-                    tags: [ 'hello/world' ] } },
-               pathToNode: 'hello/world',
-               tag: 'world',
-               tags: Map {} } } } } },
-  fileIndex:
-   Map {
-     'foo.md' => [ TagNode {
-         parent:
-          TagNode {
-            parent:
-             TagNode {
-               parent: null,
-               displayName: '',
-               files: Map {},
-               pathToNode: '',
-               tag: '',
-               tags: Map { 'hello' => [Circular] } },
-            displayName: 'hello',
-            files: Map {},
-            pathToNode: 'hello',
-            tag: 'hello',
-            tags: Map { 'world' => [Circular] } },
-         displayName: 'world',
-         files:
-          Map {
-            'foo.md' => FileNode {
-              displayName: 'foo.md',
-              key: 'foo.md',
-              filePath: 'foo.md',
-              pathToNode: 'hello/world/foo.md',
-              tags: [ 'hello/world' ] } },
-         pathToNode: 'hello/world',
-         tag: 'world',
-         tags: Map {} } ] } }"
+          tags: Map { 'world' => [Circular] }
+        },
+        displayName: 'world',
+        files: Map {
+          'foo.md' => FileNode {
+            displayName: 'foo.md',
+            key: 'foo.md',
+            filePath: 'foo.md',
+            pathToNode: 'hello/world/foo.md',
+            tags: [ 'hello/world' ]
+          }
+        },
+        pathToNode: 'hello/world',
+        tag: 'world',
+        tags: Map {}
+      }
+    ]
+  }
+}"
 `;
 
 exports[`TagTree addNode Two files under the same tag 1`] = `
 "TagTree {
-  root:
-   TagNode {
-     parent: null,
-     displayName: '',
-     files: Map {},
-     pathToNode: '',
-     tag: '',
-     tags:
-      Map {
-        'hello' => TagNode {
-          parent: [Circular],
-          displayName: 'hello',
-          files:
-           Map {
-             'foo.md' => FileNode {
-               displayName: 'foo.md',
-               key: 'foo.md',
-               filePath: 'foo.md',
-               pathToNode: 'hello/foo.md',
-               tags: [ 'hello' ] },
-             'bar.md' => FileNode {
-               displayName: 'foo.md',
-               key: 'bar.md',
-               filePath: 'bar.md',
-               pathToNode: 'hello/bar.md',
-               tags: [ 'hello' ] } },
-          pathToNode: 'hello',
-          tag: 'hello',
-          tags: Map {} } } },
-  fileIndex:
-   Map {
-     'foo.md' => [ TagNode {
-         parent:
-          TagNode {
-            parent: null,
-            displayName: '',
-            files: Map {},
-            pathToNode: '',
-            tag: '',
-            tags: Map { 'hello' => [Circular] } },
-         displayName: 'hello',
-         files:
-          Map {
-            'foo.md' => FileNode {
-              displayName: 'foo.md',
-              key: 'foo.md',
-              filePath: 'foo.md',
-              pathToNode: 'hello/foo.md',
-              tags: [ 'hello' ] },
-            'bar.md' => FileNode {
-              displayName: 'foo.md',
-              key: 'bar.md',
-              filePath: 'bar.md',
-              pathToNode: 'hello/bar.md',
-              tags: [ 'hello' ] } },
-         pathToNode: 'hello',
-         tag: 'hello',
-         tags: Map {} } ],
-     'bar.md' => [ TagNode {
-         parent:
-          TagNode {
-            parent: null,
-            displayName: '',
-            files: Map {},
-            pathToNode: '',
-            tag: '',
-            tags: Map { 'hello' => [Circular] } },
-         displayName: 'hello',
-         files:
-          Map {
-            'foo.md' => FileNode {
-              displayName: 'foo.md',
-              key: 'foo.md',
-              filePath: 'foo.md',
-              pathToNode: 'hello/foo.md',
-              tags: [ 'hello' ] },
-            'bar.md' => FileNode {
-              displayName: 'foo.md',
-              key: 'bar.md',
-              filePath: 'bar.md',
-              pathToNode: 'hello/bar.md',
-              tags: [ 'hello' ] } },
-         pathToNode: 'hello',
-         tag: 'hello',
-         tags: Map {} } ] } }"
+  root: TagNode {
+    parent: null,
+    displayName: '',
+    files: Map {},
+    pathToNode: '',
+    tag: '',
+    tags: Map {
+      'hello' => TagNode {
+        parent: [Circular],
+        displayName: 'hello',
+        files: Map {
+          'foo.md' => FileNode {
+            displayName: 'foo.md',
+            key: 'foo.md',
+            filePath: 'foo.md',
+            pathToNode: 'hello/foo.md',
+            tags: [ 'hello' ]
+          },
+          'bar.md' => FileNode {
+            displayName: 'foo.md',
+            key: 'bar.md',
+            filePath: 'bar.md',
+            pathToNode: 'hello/bar.md',
+            tags: [ 'hello' ]
+          }
+        },
+        pathToNode: 'hello',
+        tag: 'hello',
+        tags: Map {}
+      }
+    }
+  },
+  fileIndex: Map {
+    'foo.md' => [
+      TagNode {
+        parent: TagNode {
+          parent: null,
+          displayName: '',
+          files: Map {},
+          pathToNode: '',
+          tag: '',
+          tags: Map { 'hello' => [Circular] }
+        },
+        displayName: 'hello',
+        files: Map {
+          'foo.md' => FileNode {
+            displayName: 'foo.md',
+            key: 'foo.md',
+            filePath: 'foo.md',
+            pathToNode: 'hello/foo.md',
+            tags: [ 'hello' ]
+          },
+          'bar.md' => FileNode {
+            displayName: 'foo.md',
+            key: 'bar.md',
+            filePath: 'bar.md',
+            pathToNode: 'hello/bar.md',
+            tags: [ 'hello' ]
+          }
+        },
+        pathToNode: 'hello',
+        tag: 'hello',
+        tags: Map {}
+      }
+    ],
+    'bar.md' => [
+      TagNode {
+        parent: TagNode {
+          parent: null,
+          displayName: '',
+          files: Map {},
+          pathToNode: '',
+          tag: '',
+          tags: Map { 'hello' => [Circular] }
+        },
+        displayName: 'hello',
+        files: Map {
+          'foo.md' => FileNode {
+            displayName: 'foo.md',
+            key: 'foo.md',
+            filePath: 'foo.md',
+            pathToNode: 'hello/foo.md',
+            tags: [ 'hello' ]
+          },
+          'bar.md' => FileNode {
+            displayName: 'foo.md',
+            key: 'bar.md',
+            filePath: 'bar.md',
+            pathToNode: 'hello/bar.md',
+            tags: [ 'hello' ]
+          }
+        },
+        pathToNode: 'hello',
+        tag: 'hello',
+        tags: Map {}
+      }
+    ]
+  }
+}"
 `;
 
 exports[`TagTree addNode Two separate branches 1`] = `
 "TagTree {
-  root:
-   TagNode {
-     parent: null,
-     displayName: '',
-     files: Map {},
-     pathToNode: '',
-     tag: '',
-     tags:
-      Map {
-        'hello' => TagNode {
-          parent: [Circular],
-          displayName: 'hello',
-          files:
-           Map {
-             'foo.md' => FileNode {
-               displayName: 'foo.md',
-               key: 'foo.md',
-               filePath: 'foo.md',
-               pathToNode: 'hello/foo.md',
-               tags: [ 'hello', 'world' ] } },
-          pathToNode: 'hello',
-          tag: 'hello',
-          tags: Map {} },
-        'world' => TagNode {
-          parent: [Circular],
-          displayName: 'world',
-          files:
-           Map {
-             'foo.md' => FileNode {
-               displayName: 'foo.md',
-               key: 'foo.md',
-               filePath: 'foo.md',
-               pathToNode: 'world/foo.md',
-               tags: [ 'hello', 'world' ] } },
-          pathToNode: 'world',
-          tag: 'world',
-          tags: Map {} } } },
-  fileIndex:
-   Map {
-     'foo.md' => [ TagNode {
-         parent:
-          TagNode {
-            parent: null,
-            displayName: '',
-            files: Map {},
-            pathToNode: '',
-            tag: '',
-            tags:
-             Map {
-               'hello' => [Circular],
-               'world' => TagNode {
-                 parent: [Circular],
-                 displayName: 'world',
-                 files:
-                  Map {
-                    'foo.md' => FileNode {
-                      displayName: 'foo.md',
-                      key: 'foo.md',
-                      filePath: 'foo.md',
-                      pathToNode: 'world/foo.md',
-                      tags: [ 'hello', 'world' ] } },
-                 pathToNode: 'world',
-                 tag: 'world',
-                 tags: Map {} } } },
-         displayName: 'hello',
-         files:
-          Map {
-            'foo.md' => FileNode {
-              displayName: 'foo.md',
-              key: 'foo.md',
-              filePath: 'foo.md',
-              pathToNode: 'hello/foo.md',
-              tags: [ 'hello', 'world' ] } },
-         pathToNode: 'hello',
-         tag: 'hello',
-         tags: Map {} },
-       TagNode {
-         parent:
-          TagNode {
-            parent: null,
-            displayName: '',
-            files: Map {},
-            pathToNode: '',
-            tag: '',
-            tags:
-             Map {
-               'hello' => TagNode {
-                 parent: [Circular],
-                 displayName: 'hello',
-                 files:
-                  Map {
-                    'foo.md' => FileNode {
-                      displayName: 'foo.md',
-                      key: 'foo.md',
-                      filePath: 'foo.md',
-                      pathToNode: 'hello/foo.md',
-                      tags: [ 'hello', 'world' ] } },
-                 pathToNode: 'hello',
-                 tag: 'hello',
-                 tags: Map {} },
-               'world' => [Circular] } },
-         displayName: 'world',
-         files:
-          Map {
-            'foo.md' => FileNode {
-              displayName: 'foo.md',
-              key: 'foo.md',
-              filePath: 'foo.md',
-              pathToNode: 'world/foo.md',
-              tags: [ 'hello', 'world' ] } },
-         pathToNode: 'world',
-         tag: 'world',
-         tags: Map {} } ] } }"
+  root: TagNode {
+    parent: null,
+    displayName: '',
+    files: Map {},
+    pathToNode: '',
+    tag: '',
+    tags: Map {
+      'hello' => TagNode {
+        parent: [Circular],
+        displayName: 'hello',
+        files: Map {
+          'foo.md' => FileNode {
+            displayName: 'foo.md',
+            key: 'foo.md',
+            filePath: 'foo.md',
+            pathToNode: 'hello/foo.md',
+            tags: [ 'hello', 'world' ]
+          }
+        },
+        pathToNode: 'hello',
+        tag: 'hello',
+        tags: Map {}
+      },
+      'world' => TagNode {
+        parent: [Circular],
+        displayName: 'world',
+        files: Map {
+          'foo.md' => FileNode {
+            displayName: 'foo.md',
+            key: 'foo.md',
+            filePath: 'foo.md',
+            pathToNode: 'world/foo.md',
+            tags: [ 'hello', 'world' ]
+          }
+        },
+        pathToNode: 'world',
+        tag: 'world',
+        tags: Map {}
+      }
+    }
+  },
+  fileIndex: Map {
+    'foo.md' => [
+      TagNode {
+        parent: TagNode {
+          parent: null,
+          displayName: '',
+          files: Map {},
+          pathToNode: '',
+          tag: '',
+          tags: Map {
+            'hello' => [Circular],
+            'world' => TagNode {
+              parent: [Circular],
+              displayName: 'world',
+              files: Map {
+                'foo.md' => FileNode {
+                  displayName: 'foo.md',
+                  key: 'foo.md',
+                  filePath: 'foo.md',
+                  pathToNode: 'world/foo.md',
+                  tags: [ 'hello', 'world' ]
+                }
+              },
+              pathToNode: 'world',
+              tag: 'world',
+              tags: Map {}
+            }
+          }
+        },
+        displayName: 'hello',
+        files: Map {
+          'foo.md' => FileNode {
+            displayName: 'foo.md',
+            key: 'foo.md',
+            filePath: 'foo.md',
+            pathToNode: 'hello/foo.md',
+            tags: [ 'hello', 'world' ]
+          }
+        },
+        pathToNode: 'hello',
+        tag: 'hello',
+        tags: Map {}
+      },
+      TagNode {
+        parent: TagNode {
+          parent: null,
+          displayName: '',
+          files: Map {},
+          pathToNode: '',
+          tag: '',
+          tags: Map {
+            'hello' => TagNode {
+              parent: [Circular],
+              displayName: 'hello',
+              files: Map {
+                'foo.md' => FileNode {
+                  displayName: 'foo.md',
+                  key: 'foo.md',
+                  filePath: 'foo.md',
+                  pathToNode: 'hello/foo.md',
+                  tags: [ 'hello', 'world' ]
+                }
+              },
+              pathToNode: 'hello',
+              tag: 'hello',
+              tags: Map {}
+            },
+            'world' => [Circular]
+          }
+        },
+        displayName: 'world',
+        files: Map {
+          'foo.md' => FileNode {
+            displayName: 'foo.md',
+            key: 'foo.md',
+            filePath: 'foo.md',
+            pathToNode: 'world/foo.md',
+            tags: [ 'hello', 'world' ]
+          }
+        },
+        pathToNode: 'world',
+        tag: 'world',
+        tags: Map {}
+      }
+    ]
+  }
+}"
 `;
 
 exports[`TagTree deleteFile Delete file under shared tag 1`] = `
 "TagTree {
-  root:
-   TagNode {
-     parent: null,
-     displayName: '',
-     files: Map {},
-     pathToNode: '',
-     tag: '',
-     tags:
-      Map {
-        'hello' => TagNode {
-          parent: [Circular],
-          displayName: 'hello',
-          files:
-           Map {
-             '|Users|test|bar.md' => FileNode {
-               displayName: 'bar.md',
-               key: '|Users|test|bar.md',
-               filePath: '/Users/test/bar.md',
-               pathToNode: 'hello/|Users|test|bar.md',
-               tags: [ 'hello' ] } },
-          pathToNode: 'hello',
-          tag: 'hello',
-          tags: Map {} } } },
-  fileIndex:
-   Map {
-     '|Users|test|bar.md' => [ TagNode {
-         parent:
-          TagNode {
-            parent: null,
-            displayName: '',
-            files: Map {},
-            pathToNode: '',
-            tag: '',
-            tags: Map { 'hello' => [Circular] } },
-         displayName: 'hello',
-         files:
-          Map {
-            '|Users|test|bar.md' => FileNode {
-              displayName: 'bar.md',
-              key: '|Users|test|bar.md',
-              filePath: '/Users/test/bar.md',
-              pathToNode: 'hello/|Users|test|bar.md',
-              tags: [ 'hello' ] } },
-         pathToNode: 'hello',
-         tag: 'hello',
-         tags: Map {} } ] } }"
+  root: TagNode {
+    parent: null,
+    displayName: '',
+    files: Map {},
+    pathToNode: '',
+    tag: '',
+    tags: Map {
+      'hello' => TagNode {
+        parent: [Circular],
+        displayName: 'hello',
+        files: Map {
+          '|Users|test|bar.md' => FileNode {
+            displayName: 'bar.md',
+            key: '|Users|test|bar.md',
+            filePath: '/Users/test/bar.md',
+            pathToNode: 'hello/|Users|test|bar.md',
+            tags: [ 'hello' ]
+          }
+        },
+        pathToNode: 'hello',
+        tag: 'hello',
+        tags: Map {}
+      }
+    }
+  },
+  fileIndex: Map {
+    '|Users|test|bar.md' => [
+      TagNode {
+        parent: TagNode {
+          parent: null,
+          displayName: '',
+          files: Map {},
+          pathToNode: '',
+          tag: '',
+          tags: Map { 'hello' => [Circular] }
+        },
+        displayName: 'hello',
+        files: Map {
+          '|Users|test|bar.md' => FileNode {
+            displayName: 'bar.md',
+            key: '|Users|test|bar.md',
+            filePath: '/Users/test/bar.md',
+            pathToNode: 'hello/|Users|test|bar.md',
+            tags: [ 'hello' ]
+          }
+        },
+        pathToNode: 'hello',
+        tag: 'hello',
+        tags: Map {}
+      }
+    ]
+  }
+}"
 `;
 
 exports[`TagTree deleteFile Delete file under shared tag with empty node 1`] = `
 "TagTree {
-  root:
-   TagNode {
-     parent: null,
-     displayName: '',
-     files: Map {},
-     pathToNode: '',
-     tag: '',
-     tags:
-      Map {
-        'hello' => TagNode {
-          parent: [Circular],
-          displayName: 'hello',
-          files:
-           Map {
-             '|Users|test|bar.md' => FileNode {
-               displayName: 'bar.md',
-               key: '|Users|test|bar.md',
-               filePath: '/Users/test/bar.md',
-               pathToNode: 'hello/|Users|test|bar.md',
-               tags: [ 'hello' ] } },
-          pathToNode: 'hello',
-          tag: 'hello',
-          tags: Map {} } } },
-  fileIndex:
-   Map {
-     '|Users|test|bar.md' => [ TagNode {
-         parent:
-          TagNode {
-            parent: null,
-            displayName: '',
-            files: Map {},
-            pathToNode: '',
-            tag: '',
-            tags: Map { 'hello' => [Circular] } },
-         displayName: 'hello',
-         files:
-          Map {
-            '|Users|test|bar.md' => FileNode {
-              displayName: 'bar.md',
-              key: '|Users|test|bar.md',
-              filePath: '/Users/test/bar.md',
-              pathToNode: 'hello/|Users|test|bar.md',
-              tags: [ 'hello' ] } },
-         pathToNode: 'hello',
-         tag: 'hello',
-         tags: Map {} } ] } }"
+  root: TagNode {
+    parent: null,
+    displayName: '',
+    files: Map {},
+    pathToNode: '',
+    tag: '',
+    tags: Map {
+      'hello' => TagNode {
+        parent: [Circular],
+        displayName: 'hello',
+        files: Map {
+          '|Users|test|bar.md' => FileNode {
+            displayName: 'bar.md',
+            key: '|Users|test|bar.md',
+            filePath: '/Users/test/bar.md',
+            pathToNode: 'hello/|Users|test|bar.md',
+            tags: [ 'hello' ]
+          }
+        },
+        pathToNode: 'hello',
+        tag: 'hello',
+        tags: Map {}
+      }
+    }
+  },
+  fileIndex: Map {
+    '|Users|test|bar.md' => [
+      TagNode {
+        parent: TagNode {
+          parent: null,
+          displayName: '',
+          files: Map {},
+          pathToNode: '',
+          tag: '',
+          tags: Map { 'hello' => [Circular] }
+        },
+        displayName: 'hello',
+        files: Map {
+          '|Users|test|bar.md' => FileNode {
+            displayName: 'bar.md',
+            key: '|Users|test|bar.md',
+            filePath: '/Users/test/bar.md',
+            pathToNode: 'hello/|Users|test|bar.md',
+            tags: [ 'hello' ]
+          }
+        },
+        pathToNode: 'hello',
+        tag: 'hello',
+        tags: Map {}
+      }
+    ]
+  }
+}"
 `;
 
 exports[`TagTree deleteFile Delete node under root 1`] = `
 "TagTree {
-  root:
-   TagNode {
-     parent: null,
-     displayName: '',
-     files: Map {},
-     pathToNode: '',
-     tag: '',
-     tags: Map {} },
-  fileIndex: Map {} }"
+  root: TagNode {
+    parent: null,
+    displayName: '',
+    files: Map {},
+    pathToNode: '',
+    tag: '',
+    tags: Map {}
+  },
+  fileIndex: Map {}
+}"
 `;
 
 exports[`TagTree getTagsForFile Retrieves all tags for a file 1`] = `
 "TagTree {
-  root:
-   TagNode {
-     parent: null,
-     displayName: '',
-     files: Map {},
-     pathToNode: '',
-     tag: '',
-     tags:
-      Map {
-        'hello' => TagNode {
-          parent: [Circular],
-          displayName: 'hello',
-          files:
-           Map {
-             'foo.md' => FileNode {
-               displayName: 'foo.md',
-               key: 'foo.md',
-               filePath: 'foo.md',
-               pathToNode: 'hello/foo.md',
-               tags: [ 'hello', 'world' ] } },
-          pathToNode: 'hello',
-          tag: 'hello',
-          tags: Map {} },
-        'world' => TagNode {
-          parent: [Circular],
-          displayName: 'world',
-          files:
-           Map {
-             'foo.md' => FileNode {
-               displayName: 'foo.md',
-               key: 'foo.md',
-               filePath: 'foo.md',
-               pathToNode: 'world/foo.md',
-               tags: [ 'hello', 'world' ] } },
-          pathToNode: 'world',
-          tag: 'world',
-          tags: Map {} } } },
-  fileIndex:
-   Map {
-     'foo.md' => [ TagNode {
-         parent:
-          TagNode {
-            parent: null,
-            displayName: '',
-            files: Map {},
-            pathToNode: '',
-            tag: '',
-            tags:
-             Map {
-               'hello' => [Circular],
-               'world' => TagNode {
-                 parent: [Circular],
-                 displayName: 'world',
-                 files:
-                  Map {
-                    'foo.md' => FileNode {
-                      displayName: 'foo.md',
-                      key: 'foo.md',
-                      filePath: 'foo.md',
-                      pathToNode: 'world/foo.md',
-                      tags: [ 'hello', 'world' ] } },
-                 pathToNode: 'world',
-                 tag: 'world',
-                 tags: Map {} } } },
-         displayName: 'hello',
-         files:
-          Map {
-            'foo.md' => FileNode {
-              displayName: 'foo.md',
-              key: 'foo.md',
-              filePath: 'foo.md',
-              pathToNode: 'hello/foo.md',
-              tags: [ 'hello', 'world' ] } },
-         pathToNode: 'hello',
-         tag: 'hello',
-         tags: Map {} },
-       TagNode {
-         parent:
-          TagNode {
-            parent: null,
-            displayName: '',
-            files: Map {},
-            pathToNode: '',
-            tag: '',
-            tags:
-             Map {
-               'hello' => TagNode {
-                 parent: [Circular],
-                 displayName: 'hello',
-                 files:
-                  Map {
-                    'foo.md' => FileNode {
-                      displayName: 'foo.md',
-                      key: 'foo.md',
-                      filePath: 'foo.md',
-                      pathToNode: 'hello/foo.md',
-                      tags: [ 'hello', 'world' ] } },
-                 pathToNode: 'hello',
-                 tag: 'hello',
-                 tags: Map {} },
-               'world' => [Circular] } },
-         displayName: 'world',
-         files:
-          Map {
-            'foo.md' => FileNode {
-              displayName: 'foo.md',
-              key: 'foo.md',
-              filePath: 'foo.md',
-              pathToNode: 'world/foo.md',
-              tags: [ 'hello', 'world' ] } },
-         pathToNode: 'world',
-         tag: 'world',
-         tags: Map {} } ] } }"
+  root: TagNode {
+    parent: null,
+    displayName: '',
+    files: Map {},
+    pathToNode: '',
+    tag: '',
+    tags: Map {
+      'hello' => TagNode {
+        parent: [Circular],
+        displayName: 'hello',
+        files: Map {
+          'foo.md' => FileNode {
+            displayName: 'foo.md',
+            key: 'foo.md',
+            filePath: 'foo.md',
+            pathToNode: 'hello/foo.md',
+            tags: [ 'hello', 'world' ]
+          }
+        },
+        pathToNode: 'hello',
+        tag: 'hello',
+        tags: Map {}
+      },
+      'world' => TagNode {
+        parent: [Circular],
+        displayName: 'world',
+        files: Map {
+          'foo.md' => FileNode {
+            displayName: 'foo.md',
+            key: 'foo.md',
+            filePath: 'foo.md',
+            pathToNode: 'world/foo.md',
+            tags: [ 'hello', 'world' ]
+          }
+        },
+        pathToNode: 'world',
+        tag: 'world',
+        tags: Map {}
+      }
+    }
+  },
+  fileIndex: Map {
+    'foo.md' => [
+      TagNode {
+        parent: TagNode {
+          parent: null,
+          displayName: '',
+          files: Map {},
+          pathToNode: '',
+          tag: '',
+          tags: Map {
+            'hello' => [Circular],
+            'world' => TagNode {
+              parent: [Circular],
+              displayName: 'world',
+              files: Map {
+                'foo.md' => FileNode {
+                  displayName: 'foo.md',
+                  key: 'foo.md',
+                  filePath: 'foo.md',
+                  pathToNode: 'world/foo.md',
+                  tags: [ 'hello', 'world' ]
+                }
+              },
+              pathToNode: 'world',
+              tag: 'world',
+              tags: Map {}
+            }
+          }
+        },
+        displayName: 'hello',
+        files: Map {
+          'foo.md' => FileNode {
+            displayName: 'foo.md',
+            key: 'foo.md',
+            filePath: 'foo.md',
+            pathToNode: 'hello/foo.md',
+            tags: [ 'hello', 'world' ]
+          }
+        },
+        pathToNode: 'hello',
+        tag: 'hello',
+        tags: Map {}
+      },
+      TagNode {
+        parent: TagNode {
+          parent: null,
+          displayName: '',
+          files: Map {},
+          pathToNode: '',
+          tag: '',
+          tags: Map {
+            'hello' => TagNode {
+              parent: [Circular],
+              displayName: 'hello',
+              files: Map {
+                'foo.md' => FileNode {
+                  displayName: 'foo.md',
+                  key: 'foo.md',
+                  filePath: 'foo.md',
+                  pathToNode: 'hello/foo.md',
+                  tags: [ 'hello', 'world' ]
+                }
+              },
+              pathToNode: 'hello',
+              tag: 'hello',
+              tags: Map {}
+            },
+            'world' => [Circular]
+          }
+        },
+        displayName: 'world',
+        files: Map {
+          'foo.md' => FileNode {
+            displayName: 'foo.md',
+            key: 'foo.md',
+            filePath: 'foo.md',
+            pathToNode: 'world/foo.md',
+            tags: [ 'hello', 'world' ]
+          }
+        },
+        pathToNode: 'world',
+        tag: 'world',
+        tags: Map {}
+      }
+    ]
+  }
+}"
 `;
