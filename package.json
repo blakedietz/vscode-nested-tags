@@ -125,27 +125,12 @@
           }
         }
       ],
-      [
-        "@semantic-release/changelog",
-        {
-          "changelogFile": "./CHANGELOG.md"
-        }
-      ],
       "@semantic-release/github",
       [
         "semantic-release-vsce",
         {
           "path": "@semantic-release/github",
           "assets": "vscode-nested-tags.vsix"
-        }
-      ],
-      [
-        "@semantic-release/git",
-        {
-          "assets": [
-            "./CHANGELOG.md"
-          ],
-          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
         }
       ]
     ]
