@@ -33,7 +33,6 @@
     "@semantic-release/git": "^7.0.8",
     "@semantic-release/github": "^5.2.9",
     "@semantic-release/npm": "^5.1.4",
-    "@semantic-release/release-notes-generator": "^7.1.4",
     "@types/debounce": "^1.2.0",
     "@types/jest": "^23.3.12",
     "@types/node": "^10.12.18",
