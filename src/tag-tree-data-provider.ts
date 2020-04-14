@@ -5,7 +5,7 @@ import { setsAreEqual } from "./sets";
 import { FileNode, fileNodeSort } from "./tag-tree/file-node";
 import { TagNode, tagNodeSort } from "./tag-tree/tag-node";
 import { TagTree } from "./tag-tree/tag-tree";
-import * as grayMatter from "gray-matter";
+//import * as grayMatter from "gray-matter";
 import { Uri } from "vscode";
 import * as path from "path";
 
@@ -126,9 +126,9 @@ class TagTreeDataProvider
     const result = new vscode.TreeItem(displayName, collapsibleState);
     if (isFile) {
       result.command = {
-        arguments: [vscode.Uri.file(tagTreeNode.filePath)],
-        command: "vscode.open",
-        title: "Jump to tag reference"
+        arguments: [tagTreeNode],
+        command: "extension.jumpToLine",
+        title: "Open and Jump to Line"
       };
     }
     return result;
@@ -210,7 +210,7 @@ class TagTreeDataProvider
       this.tagTree.addFile(
         fileUri.fsPath,
         [...fileInfo.tags.values()],
-        displayName
+        displayName 
       );
       this._onDidChangeTreeData.fire();
     }
@@ -257,35 +257,24 @@ class TagTreeDataProvider
     fileContents: string,
     filePath: string
   ): IFileInfo {
-    // Parse any yaml frontmatter and check for tags within that frontmatter
-    const { data } = grayMatter(fileContents);
-    let yamlTags = new Set();
-    if (data.tags) {
-      yamlTags = new Set([data.tags]);
+    var allTags = new Array();
+    var char = '\n';
+    var i = 0;
+    var j = 0;
+    var lines = 1;
+
+    //Loop on '/n' and process each line with a regex (TODO -- Regex for YAML?)
+    while ((j = fileContents.indexOf(char, i)) !== -1) {
+      for (let f, reg = /\B@nested-tags:[A-Za-z0-9\-\.\,\_\/]+\b/g; f = reg.exec(fileContents.substring(i, j));) {
+        var itemToProcess = f[0].replace('@nested-tags:','');
+        var newTreeElementString = "";
+        newTreeElementString = itemToProcess + "/LineNum(" + lines.toString() + ")";    
+        allTags.push(newTreeElementString);
+      }
+      lines++;
+      i = j + 1;
     }
-
-    return fileContents.split("\n").reduce(
-      (accumulator, currentLine) => {
-        if (currentLine.includes("@nested-tags:")) {
-          // @ts-ignore
-          const tagsToAdd = currentLine
-            .split("@nested-tags:")
-            .pop()
-            // Do some best effort cleanup on common multi-line comment closing syntax
-            .replace("-->", "")
-            .replace("*/", "")
-            .split(",");
-          return {
-            ...accumulator,
-            tags: new Set([...accumulator.tags, ...tagsToAdd])
-          };
-        }
-
-        return accumulator;
-      },
-      // @ts-ignore
-      { tags: new Set(...yamlTags), filePath }
-    );
+    return {tags: new Set(allTags), filePath: filePath};
   }
 
   /**
