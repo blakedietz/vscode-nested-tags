@@ -75,7 +75,7 @@ class TagTreeDataProvider
           this.tagTree.addFile(info.filePath, [...info.tags], displayName);
         });
 
-      this._onDidChangeTreeData.fire();
+        this._onDidChangeTreeData.fire();
     })();
   }
 
@@ -126,9 +126,9 @@ class TagTreeDataProvider
     const result = new vscode.TreeItem(displayName, collapsibleState);
     if (isFile) {
       result.command = {
-        arguments: [vscode.Uri.file(tagTreeNode.filePath)],
-        command: "vscode.open",
-        title: "Jump to tag reference"
+        arguments: [tagTreeNode],
+        command: "extension.jumpToLine",
+        title: "Open and Jump to Line"
       };
     }
     return result;
@@ -210,7 +210,7 @@ class TagTreeDataProvider
       this.tagTree.addFile(
         fileUri.fsPath,
         [...fileInfo.tags.values()],
-        displayName
+        displayName 
       );
       this._onDidChangeTreeData.fire();
     }
@@ -257,35 +257,72 @@ class TagTreeDataProvider
     fileContents: string,
     filePath: string
   ): IFileInfo {
-    // Parse any yaml frontmatter and check for tags within that frontmatter
-    const { data } = grayMatter(fileContents);
-    let yamlTags = new Set();
-    if (data.tags) {
-      yamlTags = new Set([data.tags]);
-    }
+  var allTags = new Array();
+  var char = '\n';
+  var i = 0;
+  var j = 0;
+  var lines = 1;
+  var itemToProcess;
+  var newTreeElementString;
 
-    return fileContents.split("\n").reduce(
-      (accumulator, currentLine) => {
-        if (currentLine.includes("@nested-tags:")) {
-          // @ts-ignore
-          const tagsToAdd = currentLine
-            .split("@nested-tags:")
-            .pop()
-            // Do some best effort cleanup on common multi-line comment closing syntax
-            .replace("-->", "")
-            .replace("*/", "")
-            .split(",");
-          return {
-            ...accumulator,
-            tags: new Set([...accumulator.tags, ...tagsToAdd])
-          };
+  var filename = filePath.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.');
+   
+  // Parse any yaml frontmatter and check for tags within that frontmatter
+  const { data } = grayMatter(fileContents);
+  if (data.tags) {
+    //find the 'tags:' linenumber
+    /*
+    var searchStr = fileContents.split('\n');
+    var foundline = 0;
+    searchStr.forEach((line, number) => {
+        if (line.includes("tags:")){
+          foundline = lines;
         }
+        else
+          lines++;
+    });*/
+    //load the tags from the grayMatter YAML parser
+    data.tags.forEach((tag: any)=> {
+      allTags.push(tag); // + "/LineNum(" + foundline.toString() + ")");
+    });
+  }
 
-        return accumulator;
-      },
-      // @ts-ignore
-      { tags: new Set(...yamlTags), filePath }
-    );
+  i = 0;
+  j = 0;
+  lines = 1;
+
+  //Inline Tags
+  //Loop on '/n' and process each line with a regex looking for nested tags
+  while ((j = fileContents.indexOf(char, i)) !== -1) {
+    for (let f, reg = /\B.+@(nested-tags:).+/g; f = reg.exec(fileContents.substring(i, j));) {
+      itemToProcess = f[0].replace('@nested-tags:','').replace("<!--", "").replace("-->", "").replace("*/", "").replace("/*", "").split(",");
+      itemToProcess.forEach(itm=>{
+        newTreeElementString = "";
+        newTreeElementString = itm + "/[" + filename +"]/LineNum(" + lines.toString() + ")";    
+        allTags.push(newTreeElementString);
+      });
+    }
+    lines++;
+    i = j + 1;
+  }
+
+  i = 0;
+  j = 0;
+  lines = 1;
+
+  //Special '@@' tags
+  //Loop on '/n' and process each line with a regex looking for '@@' tags
+  while ((j = fileContents.indexOf(char, i)) !== -1) {
+    for (let f, reg = /\B@@[A-Za-z0-9\-\.\_\/]+\b/g; f = reg.exec(fileContents.substring(i, j));) {
+      itemToProcess = f[0];//.replace('@nested-tags:','');
+      newTreeElementString = "";
+      newTreeElementString = itemToProcess + "/[" + filename + "]/LineNum(" + lines.toString() + ")";    
+      allTags.push(newTreeElementString);
+    }
+    lines++;
+    i = j + 1;
+  }
+  return {tags: new Set(allTags), filePath: filePath};
   }
 
   /**
