@@ -265,7 +265,7 @@ class TagTreeDataProvider
   var itemToProcess;
   var newTreeElementString;
 
-  var filename = filePath.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.');
+  //var filename = filePath.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.');
    
   // Parse any yaml frontmatter and check for tags within that frontmatter
   const { data } = grayMatter(fileContents);
@@ -298,7 +298,7 @@ class TagTreeDataProvider
       itemToProcess = f[0].replace('@nested-tags:','').replace("<!--", "").replace("-->", "").replace("*/", "").replace("/*", "").split(",");
       itemToProcess.forEach(itm=>{
         newTreeElementString = "";
-        newTreeElementString = itm + "/[" + filename +"]/LineNum(" + lines.toString() + ")";    
+        newTreeElementString = itm +"/LineNum(" + lines.toString() + ")";    
         allTags.push(newTreeElementString);
       });
     }
@@ -316,7 +316,7 @@ class TagTreeDataProvider
     for (let f, reg = /\B@@[A-Za-z0-9\-\.\_\/]+\b/g; f = reg.exec(fileContents.substring(i, j));) {
       itemToProcess = f[0];//.replace('@nested-tags:','');
       newTreeElementString = "";
-      newTreeElementString = itemToProcess + "/[" + filename + "]/LineNum(" + lines.toString() + ")";    
+      newTreeElementString = itemToProcess + "/LineNum(" + lines.toString() + ")";    
       allTags.push(newTreeElementString);
     }
     lines++;
