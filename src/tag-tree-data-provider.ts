@@ -310,10 +310,10 @@ class TagTreeDataProvider
     j = 0;
     lines = 1;
 
-    //Special '@@' tags
+    //Special '~~' tags
     //Loop on '/n' and process each line with a regex looking for '@@' tags
     while ((j = fileContents.indexOf(char, i)) !== -1) {
-      for (let f, reg = /\B@@[A-Za-z0-9\-\.\_\/]+\b/g; f = reg.exec(fileContents.substring(i, j));) {
+      for (let f, reg = /\B~~[A-Za-z0-9\-\.\_\/]+\b/g; f = reg.exec(fileContents.substring(i, j));) {
         itemToProcess = f[0];//.replace('@nested-tags:','');
         newTreeElementString = "";
         newTreeElementString = itemToProcess + "/LineNum(" + lines.toString() + ")";
