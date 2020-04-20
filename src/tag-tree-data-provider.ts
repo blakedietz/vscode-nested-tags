@@ -75,7 +75,7 @@ class TagTreeDataProvider
           this.tagTree.addFile(info.filePath, [...info.tags], displayName);
         });
 
-        this._onDidChangeTreeData.fire();
+      this._onDidChangeTreeData.fire();
     })();
   }
 
@@ -210,7 +210,7 @@ class TagTreeDataProvider
       this.tagTree.addFile(
         fileUri.fsPath,
         [...fileInfo.tags.values()],
-        displayName 
+        displayName
       );
       this._onDidChangeTreeData.fire();
     }
@@ -257,72 +257,72 @@ class TagTreeDataProvider
     fileContents: string,
     filePath: string
   ): IFileInfo {
-  var allTags = new Array();
-  var char = '\n';
-  var i = 0;
-  var j = 0;
-  var lines = 1;
-  var itemToProcess;
-  var newTreeElementString;
+    var allTags = new Array();
+    var char = '\n';
+    var i = 0;
+    var j = 0;
+    var lines = 1;
+    var itemToProcess;
+    var newTreeElementString;
 
-  //var filename = filePath.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.');
-   
-  // Parse any yaml frontmatter and check for tags within that frontmatter
-  const { data } = grayMatter(fileContents);
-  if (data.tags) {
-    //find the 'tags:' linenumber
-    /*
-    var searchStr = fileContents.split('\n');
-    var foundline = 0;
-    searchStr.forEach((line, number) => {
-        if (line.includes("tags:")){
-          foundline = lines;
-        }
-        else
-          lines++;
-    });*/
-    //load the tags from the grayMatter YAML parser
-    data.tags.forEach((tag: any)=> {
-      allTags.push(tag); // + "/LineNum(" + foundline.toString() + ")");
-    });
-  }
+    //var filename = filePath.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.');
 
-  i = 0;
-  j = 0;
-  lines = 1;
-
-  //Inline Tags
-  //Loop on '/n' and process each line with a regex looking for nested tags
-  while ((j = fileContents.indexOf(char, i)) !== -1) {
-    for (let f, reg = /\B.+@(nested-tags:).+/g; f = reg.exec(fileContents.substring(i, j));) {
-      itemToProcess = f[0].replace('@nested-tags:','').replace("<!--", "").replace("-->", "").replace("*/", "").replace("/*", "").split(",");
-      itemToProcess.forEach(itm=>{
-        newTreeElementString = "";
-        newTreeElementString = itm +"/LineNum(" + lines.toString() + ")";    
-        allTags.push(newTreeElementString);
+    // Parse any yaml frontmatter and check for tags within that frontmatter
+    const { data } = grayMatter(fileContents);
+    if (data.tags) {
+      //find the 'tags:' linenumber
+      /*
+      var searchStr = fileContents.split('\n');
+      var foundline = 0;
+      searchStr.forEach((line, number) => {
+          if (line.includes("tags:")){
+            foundline = lines;
+          }
+          else
+            lines++;
+      });*/
+      //load the tags from the grayMatter YAML parser
+      data.tags.forEach((tag: any) => {
+        allTags.push(tag); // + "/LineNum(" + foundline.toString() + ")");
       });
     }
-    lines++;
-    i = j + 1;
-  }
 
-  i = 0;
-  j = 0;
-  lines = 1;
+    i = 0;
+    j = 0;
+    lines = 1;
 
-  //Special '@@' tags
-  //Loop on '/n' and process each line with a regex looking for '@@' tags
-  while ((j = fileContents.indexOf(char, i)) !== -1) {
-    for (let f, reg = /\B@@[A-Za-z0-9\-\.\_\/]+\b/g; f = reg.exec(fileContents.substring(i, j));) {
-      itemToProcess = f[0];//.replace('@nested-tags:','');
-      newTreeElementString = "";
-      newTreeElementString = itemToProcess + "/LineNum(" + lines.toString() + ")";    
-      allTags.push(newTreeElementString);
+    //Inline Tags
+    //Loop on '/n' and process each line with a regex looking for nested tags
+    while ((j = fileContents.indexOf(char, i)) !== -1) {
+      for (let f, reg = /\B.+@(nested-tags:).+/g; f = reg.exec(fileContents.substring(i, j));) {
+        itemToProcess = f[0].replace('@nested-tags:', '').replace("<!--", "").replace("-->", "").replace("*/", "").replace("/*", "").split(",");
+        itemToProcess.forEach(itm => {
+          newTreeElementString = "";
+          newTreeElementString = itm + "/LineNum(" + lines.toString() + ")";
+          allTags.push(newTreeElementString);
+        });
+      }
+      lines++;
+      i = j + 1;
     }
-    lines++;
-    i = j + 1;
-  }
-  return {tags: new Set(allTags), filePath: filePath};
+
+    i = 0;
+    j = 0;
+    lines = 1;
+
+    //Special '@@' tags
+    //Loop on '/n' and process each line with a regex looking for '@@' tags
+    while ((j = fileContents.indexOf(char, i)) !== -1) {
+      for (let f, reg = /\B@@[A-Za-z0-9\-\.\_\/]+\b/g; f = reg.exec(fileContents.substring(i, j));) {
+        itemToProcess = f[0];//.replace('@nested-tags:','');
+        newTreeElementString = "";
+        newTreeElementString = itemToProcess + "/LineNum(" + lines.toString() + ")";
+        allTags.push(newTreeElementString);
+      }
+      lines++;
+      i = j + 1;
+    }
+    return { tags: new Set(allTags), filePath: filePath };
   }
 
   /**
