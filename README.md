@@ -67,3 +67,15 @@ This extension has only been tested on macOS.
 ### Code
 
 vs code 1.30.0 is required at a minimum.
+
+## Support
+
+Help support the project by sending some BTC to the following crypto wallets
+
+### BTC
+
+39DUAVda1zkiszw4KrPSHwdmT4pNDUrWfE
+
+### ETH
+
+0x30D2Cba30E62DfD64E945F821cF0d27B437AdBa5
